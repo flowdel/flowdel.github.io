@@ -1,0 +1,44 @@
+/* .nav { это в браузер
+    font-size: 9px;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+} */
+
+/* .nav__link { это в браузер
+    display: inline-block; 
+    vertical-align: top;
+    margin: 0 10px;
+    text-decoration: none;
+    color: #333131;
+} */
+
+.nav {
+    font-size: 9px;
+    text-transform: uppercase;
+    width: 100%;
+    position: absolute;
+    background-color: #ffffff;
+    top: 100%;
+    left: 0;
+
+    display: none;
+}
+
+.nav__link {
+    display: block;
+    padding: 10px;
+    color: #333131;
+    border-top: 1px solid #d1cece;
+
+    text-decoration: none;
+}
+
+.nav__link:last-child {
+    border-bottom: 1px solid #d1cece;
+}
+
+
+.nav__link:hover {
+    color: #e6c269;
+}

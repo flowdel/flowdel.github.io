@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <meta name="viewport" content="width-device-width, initial-scale=1">
+        <title>Login</title>
+        <link rel="stylesheet" href="css/main.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+            integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    </head>
+
+    <body>
+
+        <div class="wrapper">
+
+            <header class="header" id="header">
+                <div class="container">
+                    <div class="header__container">
+                        <div class="header__logo" data-scroll="#intro">
+                            <img src="images/logo_2.png" alt="">
+                        </div>
+
+                        <div class="header__nav">
+                            <nav class="nav" id="nav">
+                                <a class="nav__link" href="#" data-scroll="#about">О нас</a>
+                                <a class="nav__link" href="#" data-scroll="#services">Услуги</a>
+                                <a class="nav__link" href="#" data-scroll="#contact">Контакты</a>
+                                <a class="nav__link" href="#">Корзина (<span>0</span>)</a>
+                            </nav> 
+                        </div>
+
+                        <div class="header__actions">
+                            <a class="header__cart" href="#"><i class="fas fa-shopping-cart"></i> (<span>0</span>)</a>
+                            <div class="nav-toggle" id="nav-toggle">
+                                <button class="nav-toggle__button" type="button" >
+                                    <span class="nav-toggle__item"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+            </header>
+            
+            <div class="container">
+                <div class="spacer"></div>
+                <div class="headline">Профиль</div>
+                <form action="" class="user-profile">
+                    <label for="user-profile__name">Имя:</label>
+                    <input class="user-profile__name" type="text" value="Павел" id="user-profile__name">
+                    <label for="user-profile__address">Адрес:</label>
+                    <input class="user-profile__address" type="text" value="Говняшеский переулок, д.2" id="user-profile__address">
+                    <label for="user-profile__email">Почта:</label>
+                    <input class="user-profile__email" type="email" value="pepka.govnepka@pahan.ru" id="user-profile__email">
+                    <label for="user-profile__number">Телефон:</label>
+                    <input class="user-profile__number" type="text" value="+7(938)4238728" id="user-profile__number">
+                    <label for="user-profile__vegan">Веган:</label>
+                    <input class="user-profile__vegan" type="text" value="Нет" id="user-profile__vegan">
+                    <label for="user-profile__info">О себе:</label>
+                    <input class="user-profile__info" type="text" value="Люблю покушац" id="user-profile__info">
+                </form>
+                <input class="button" type="button" value="Редактировать">
+            </div>
+
+
+        </div>
+    </body>
+
+</html>

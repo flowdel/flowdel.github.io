@@ -1,0 +1,78 @@
+<template>
+    <div
+        id="welcome"
+        class="welcome"
+    >
+        <div class="container">
+            <img
+                class="welcome-logo"
+                src="../../../images/logo_2.png"
+                alt=""
+            >
+            <h1 class="welcome-headline">
+                Накорми соседа!
+            </h1>
+
+            <div class="welcome-links">
+                <router-link
+                    class="welcome-link"
+                    to="/signin"
+                >
+                    Войти
+                </router-link>
+                <router-link
+                    class="welcome-link"
+                    to="/signup"
+                >
+                    Зарегистрироваться
+                </router-link>
+            </div>
+        </div>
+    </div>
+</template>
+
+<style>
+    .welcome {
+        margin: 0 auto;
+        width: 50%;
+        /* min-height: 100vh; */
+    }
+
+    .welcome-headline {
+        margin: 0;
+        margin-bottom: 20px;
+        font-weight: 300;
+        text-align: center;
+    }
+
+    .welcome-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .welcome-link {
+        color: #333333;
+        border: 1px solid #b3b3b3;
+        padding: 5px;
+        text-decoration: none;
+        border-radius: 25px;
+        padding: 5px 50px;
+        min-width: 250px;
+    }
+
+    .welcome-link:first-child {
+        margin-bottom: 5px;
+    }
+
+    .welcome-link:hover {
+        background-color: #f3f3f3;
+    }
+
+    .welcome-logo {
+        display: block;
+        width: 145px;
+        margin: 0 auto;
+    }
+</style>

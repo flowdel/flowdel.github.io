@@ -1,0 +1,28 @@
+.header {
+    border-bottom: 1px solid #333131;
+}
+
+.header__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.header__logo img {
+    display: block;
+    height: 40px;
+    width: 40px;
+}
+
+.header__actions {
+    display: flex;
+}
+
+.header__cart {
+    color: #333131;
+    text-decoration: none;
+    margin-right: 5px;
+}
+

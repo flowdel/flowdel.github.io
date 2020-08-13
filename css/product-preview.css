@@ -1,0 +1,33 @@
+.product-preview__info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.product-preview__price {
+    color: #40db81
+}
+
+.product-preview__img {
+    margin-bottom: 15px;
+}
+
+.product-preview_type_vertical  {
+    display: flex;
+}
+
+.product-preview_type_vertical .product-preview__info {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-left: 20px;
+}
+
+.product-preview_type_vertical .product-preview__name {
+    margin-bottom: 10px;
+}
+
+.product-preview_type_vertical .product-preview__img {
+    width: 100px;
+    height: 80px;
+}
