@@ -2,7 +2,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import router from '../../router';
+// import router from '../../router';
 import {
     setIdToken, removeIdToken, setUserId, removeUserId,
 } from '../../storage';
@@ -35,54 +35,48 @@ const mutations = {
 
 const actions = {
 
-    signin({ commit }, authData) {
-        signin(authData)
-            .then((response) => {
-                commit('authUser', {
-                    idToken: response.data.jwt,
-                    userId: response.data.user.id,
-                });
-                commit('storeUser', {
-                    email: authData.email,
-                    password: authData.password,
-                    userId: response.data.user.id,
-                    idToken: response.data.jwt,
-                });
-                setIdToken(response.data.jwt);
-                setUserId(response.data.user.id);
-                router.replace('/products');
-            })
-            .catch((error) => console.log(error));
+    async signin({ commit }, authData) {
+        const response = await signin(authData);
+
+        commit('authUser', {
+            idToken: response.data.jwt,
+            userId: response.data.user.id,
+        });
+        commit('storeUser', {
+            email: authData.email,
+            password: authData.password,
+            userId: response.data.user.id,
+            idToken: response.data.jwt,
+        });
+        setIdToken(response.data.jwt);
+        setUserId(response.data.user.id);
     },
 
-    signup({ commit }, authData) {
-        signup(authData)
-            .then((response) => {
-                commit('authUser', {
-                    idToken: response.data.jwt,
-                    userId: response.data.user.id,
-                });
-                commit('storeUser', {
-                    email: authData.email,
-                    password: authData.password,
-                    userId: response.data.user.id,
-                });
-                setIdToken(response.data.jwt);
-                setUserId(response.data.user.id);
-                router.replace('/products');
-            })
-            .catch((error) => console.log(error));
+    async signup({ commit }, authData) {
+        const response = await signup(authData);
+
+        commit('authUser', {
+            idToken: response.data.jwt,
+            userId: response.data.user.id,
+        });
+        commit('storeUser', {
+            email: authData.email,
+            password: authData.password,
+            userId: response.data.user.id,
+        });
+        setIdToken(response.data.jwt);
+        setUserId(response.data.user.id);
+        // router.replace('/products');
     },
 
     signout({ commit }) {
         commit('clearAuthData');
-        router.replace('/signin');
+        // router.replace('/signin');
         removeIdToken();
         removeUserId();
     },
 
     async tryAutoLogin({ commit }, payload) {
-        console.log(payload.idToken);
         if (!payload.idToken) return;
         await commit('authUser', {
             idToken: payload.idToken,

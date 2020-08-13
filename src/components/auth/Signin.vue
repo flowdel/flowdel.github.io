@@ -58,11 +58,13 @@ export default {
         };
     },
     methods: {
-        onSubmit() {
-            this.$store.dispatch('signin', {
+        async onSubmit() {
+            await this.$store.dispatch('signin', {
                 email: this.email,
                 password: this.password,
             });
+
+            this.$router.replace('/products');
         },
     },
 };

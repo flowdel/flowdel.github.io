@@ -54,8 +54,9 @@ export default {
         },
     },
     methods: {
-        signout() {
-            this.$store.dispatch('signout');
+        async signout() {
+            await this.$store.dispatch('signout');
+            this.$router.replace('/signin');
         },
     },
 };

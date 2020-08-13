@@ -1,5 +1,8 @@
 <template>
-    <div class="product-detail">
+    <div
+        v-if="product"
+        class="product-detail"
+    >
         <img
             class="product-detail__img"
             :src="`http://strapi.kameas.ru${product.image[0].url}`"
@@ -91,6 +94,9 @@ export default {
             return this.product.author.id === this.$store.state.authorization.userId;
         },
     },
+    created() {
+        this.getProductData(this.$route.params.id);
+    },
     methods: {
         getProductData(productId) {
             axios.get(`products?id=${productId}`, {
@@ -118,11 +124,11 @@ export default {
             this.$store.dispatch('removeProduct', this.product);
         },
     },
-    beforeRouteEnter(to, from, next) {
-        next((vm) => {
-            vm.getProductData(vm.$route.params.id);
-        });
-    },
+    // beforeRouteEnter(to, from, next) {
+    //     next((vm) => {
+    //         vm.getProductData(vm.$route.params.id);
+    //     });
+    // },
 };
 </script>
 

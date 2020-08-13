@@ -93,13 +93,14 @@ export default {
         };
     },
     methods: {
-        onSubmit() {
-            this.$store.dispatch('signup', {
+        async onSubmit() {
+            await this.$store.dispatch('signup', {
                 name: this.name,
                 login: this.login,
                 email: this.email,
                 password: this.password,
             });
+
             this.$router.replace('/products');
         },
     },

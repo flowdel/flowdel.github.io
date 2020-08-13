@@ -1,7 +1,6 @@
 <template>
     <div id="app">
         <app-header />
-        {{ test }}
         <router-view />
     </div>
 </template>

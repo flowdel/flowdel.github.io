@@ -13,30 +13,31 @@ import UserProfile from './components/user/UserProfile.vue';
 import CookerProfile from './components/cooker/CookerProfile.vue';
 import Confirm from './components/Confirm.vue';
 // import { getUserId } from './storage';
+import { getIdToken, getUserId } from './storage';
+import store from './store/store';
 
 Vue.use(VueRouter);
 
-// function guard(to, from, next) {
-//     let isAuthenticated = false;
-//     if (localStorage.getItem('loggedUser')) isAuthenticated = true;
-//     else { isAuthenticated = false; }
-//     if (isAuthenticated) {
-//         next(); // allow to enter route
-//     } else {
-//         next('/products'); // go to '/login';
-//     }
-// }
+async function guard(to, from, next) {
+    let isAuthenticated = false;
+    const idToken = await getIdToken();
+    const userId = await getUserId();
 
-// async function guard(to, from, next) {
-//     const user = await getUserId();
-//     if (user) {
-//         console.log('All OK');
-//         next();
-//     } else {
-//         console.log('STOP guard');
-//         next(false);
-//     }
-// }
+    if (idToken && userId) {
+        isAuthenticated = true;
+    }
+
+    if (isAuthenticated) {
+        await store.dispatch('tryAutoLogin', {
+            idToken,
+            userId,
+        });
+
+        next();
+    } else {
+        next('/signin');
+    }
+}
 
 const routes = [
     { path: '/', component: WelcomePage },
@@ -44,20 +45,40 @@ const routes = [
     { path: '/signup', component: SignupPage },
     { path: '/settings', component: UserProfile },
     {
-        path: '/profile/:id', name: 'CookerProfile', component: CookerProfile, props: true,
+        path: '/profile/:id',
+        name: 'CookerProfile',
+        component: CookerProfile,
+        props: true,
+        beforeEnter: guard,
     },
     {
         path: '/products',
         name: 'Products',
-
         component: Products,
+        beforeEnter: guard,
     },
     {
-        path: '/products/:id', name: 'ProductDetails', component: ProductDetails, props: true,
+        path: '/products/:id',
+        name: 'ProductDetails',
+        component: ProductDetails,
+        props: true,
+        beforeEnter: guard,
     },
-    { path: '/cart', component: Cart },
-    { path: '/new-product', component: NewProduct },
-    { path: '/confirm', component: Confirm },
+    {
+        path: '/cart',
+        component: Cart,
+        beforeEnter: guard,
+    },
+    {
+        path: '/new-product',
+        component: NewProduct,
+        beforeEnter: guard,
+    },
+    {
+        path: '/confirm',
+        component: Confirm,
+        beforeEnter: guard,
+    },
     { path: '*', redirect: '/' },
 ];
 
