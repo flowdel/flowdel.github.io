@@ -21,6 +21,14 @@ export default {
         };
     },
     async created() {
+        const path = localStorage.getItem('path');
+
+        if (path) {
+            localStorage.removeItem('path');
+            this.$router.replace(path);
+            return;
+        }
+
         const idToken = await getIdToken();
         const userId = await getUserId();
 
