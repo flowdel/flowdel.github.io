@@ -5,7 +5,7 @@
     >
         <img
             class="product-detail__img"
-            :src="`http://strapi.kameas.ru${product.image[0].url}`"
+            :src="`https://strapi.kameas.ru${product.image[0].url}`"
             alt=""
         >
         <div class="container">
@@ -24,7 +24,7 @@
             >
                 <div
                     class="product-detail__author-img"
-                    :style="{backgroundImage: `url(http://strapi.kameas.ru${product.author.image[0].url})`}"
+                    :style="{backgroundImage: `url(https://strapi.kameas.ru${product.author.image[0].url})`}"
                 />
                 <div class="product-detail__author-name">
                     {{ product.author.name }}

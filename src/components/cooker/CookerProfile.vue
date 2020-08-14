@@ -6,7 +6,7 @@
         >
             <img
                 class="cooker-profile__img"
-                :src="`http://strapi.kameas.ru${user.image[0].url}`"
+                :src="`https://strapi.kameas.ru${user.image[0].url}`"
                 alt=""
             >
             <div class="spacer" />

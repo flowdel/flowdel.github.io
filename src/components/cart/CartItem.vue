@@ -2,7 +2,7 @@
     <div class="product-preview product-preview_type_vertical">
         <div class="product-preview__description">
             <img
-                :src="`http://strapi.kameas.ru${item.image[0].url}`"
+                :src="`https://strapi.kameas.ru${item.image[0].url}`"
                 alt=""
             >
             <div class="product-preview__info">

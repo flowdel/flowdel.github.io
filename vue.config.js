@@ -15,11 +15,12 @@ const devServer = {
 
     proxy: {
         '/api': {
-            target: 'http://strapi.kameas.ru/',
+            target: 'https://strapi.kameas.ru/',
         },
     },
 };
 
 module.exports = {
     devServer,
+    outputDir: 'docs',
 };

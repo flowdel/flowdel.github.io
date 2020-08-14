@@ -6,7 +6,7 @@
         >
             <img
                 class="product-preview__img"
-                :src="`http://strapi.kameas.ru${product.image[0].url}`"
+                :src="`https://strapi.kameas.ru${product.image[0].url}`"
                 alt=""
             >
             <div class="product-preview__info">
