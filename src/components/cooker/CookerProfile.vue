@@ -18,7 +18,9 @@
                     {{ user.info }}
                 </div>
 
-                <div class="cooker-profile__current-dishes">
+                <div
+                    class="cooker-profile__current-dishes"
+                >
                     <div class="headline">
                         {{ user.name }} - блюда
                     </div>
@@ -29,7 +31,9 @@
                     />
                 </div>
 
-                <div class="cooker-profile__prev-dishes">
+                <div
+                    class="cooker-profile__prev-dishes"
+                >
                     <div class="headline">
                         {{ user.name }} - прошлые блюда
                     </div>
@@ -84,7 +88,7 @@ export default {
                 },
             })
                 .then((response) => {
-                    if (response.data) {
+                    if (response.data.length > 0) {
                         this.hasProducts = true;
                         const allProducts = response.data;
                         this.products = allProducts.filter((product) => product.active === true);

@@ -43,7 +43,13 @@ const routes = [
     { path: '/', component: WelcomePage },
     { path: '/signin', component: SigninPage },
     { path: '/signup', component: SignupPage },
-    { path: '/settings', component: UserProfile },
+    {
+        path: '/settings',
+        name: 'UserProfile',
+        component: UserProfile,
+        props: true,
+        beforeEnter: guard,
+    },
     {
         path: '/profile/:id',
         name: 'CookerProfile',

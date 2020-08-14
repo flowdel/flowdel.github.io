@@ -9,27 +9,53 @@
             action=""
             class="new-product"
         >
-            <label for="new-product__name">Название:</label>
+            <label
+                for="new-product__name"
+            >Название:</label>
             <input
                 id="new-product__name"
                 v-model="name"
                 class="new-product__input"
                 type="text"
+                @blur="$v.name.$touch()"
             >
-            <label for="new-product__price">Цена:</label>
+            <p
+                v-if="$v.name.$anyError"
+                class="error-message"
+            >
+                Имя является обязательной строкой!
+            </p>
+            <label
+                for="new-product__price"
+                class="error-message"
+            >Цена:</label>
             <input
                 id="new-product__price"
                 v-model="price"
                 class="new-product__input"
                 type="text"
+                @blur="$v.price.$touch()"
             >
+            <p
+                v-if="$v.price.$anyError"
+                class="error-message"
+            >
+                Пожалуйста, введите число!
+            </p>
             <label for="file">Загрузите фото блюда:</label>
             <input
                 id="file"
                 class="new-product__input"
                 type="file"
                 @change="handleFileUpload"
+                @blur="$v.file.$touch()"
             >
+            <p
+                v-if="$v.file.$anyError"
+                class="error-message"
+            >
+                Пожалуйста, прикрепите фото блюда!
+            </p>
             <label for="new-product__info">Описание:</label>
             <input
                 id="new-product__info"
@@ -41,19 +67,32 @@
             <select
                 id="new-product__payment-method"
                 v-model="chosenPaymentMethod"
+                @blur="$v.chosenPaymentMethod.$touch()"
             >
                 <option>Перевод на карту</option>
                 <option>Наличными</option>
             </select>
+            <p
+                v-if="$v.chosenPaymentMethod.$anyError"
+                class="error-message"
+            >
+                Пожалуйста, выберите способ оплаты.
+            </p>
             <label for="new-product__delivery">Доставка:</label>
             <select
                 id="new-product__delivery"
                 v-model="chosenDeliveryMethod"
+                @blur="$v.chosenDeliveryMethod.$touch()"
             >
                 <option>На дом</option>
                 <option>Забрать у меня</option>
             </select>
-
+            <p
+                v-if="$v.chosenDeliveryMethod.$anyError"
+                class="error-message"
+            >
+                Пожалуйста, выберите способ доставки.
+            </p>
             <label>Для веганов:</label>
             <div class="new-product__vegan">
                 <div>
@@ -62,8 +101,15 @@
                         v-model="vegan"
                         type="radio"
                         value="true"
+                        @blur="$v.vegan.$touch()"
                     >
                     <label for="yes">Да</label>
+                    <p
+                        v-if="$v.vegan.$anyError"
+                        class="error-message"
+                    >
+                        Пожалуйста, укажите, подходит ли блюдо для веганов!
+                    </p>
                 </div>
                 <div>
                     <input
@@ -85,6 +131,9 @@
 </template>
 
 <script>
+import {
+    required, numeric,
+} from 'vuelidate/lib/validators';
 import Button from '../Button.vue';
 
 export default {
@@ -102,6 +151,28 @@ export default {
             vegan: false,
             file: '',
         };
+    },
+    validations: {
+        name: {
+            required,
+        },
+        price: {
+            required,
+            numeric,
+        },
+        file: {
+            required,
+        },
+        chosenPaymentMethod: {
+            required,
+        },
+        chosenDeliveryMethod: {
+            required,
+        },
+        vegan: {
+            required,
+        },
+
     },
     computed: {
         author() {
@@ -187,8 +258,9 @@ export default {
         font-size: 14px;
     }
 
-    /* #new-product__img {
-        border: 0
-    } */
+    .error-message {
+        font-size: 14px;
+        color: red
+    }
 
 </style>

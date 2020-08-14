@@ -13,7 +13,10 @@
                 <div class="headline">
                     Регистрация
                 </div>
-                <div class="form-group">
+                <div
+                    class="form-group"
+                    :class="{invalid: $v.name.$error}"
+                >
                     <label
                         class="signup__label"
                         for="name"
@@ -22,9 +25,16 @@
                         id="name"
                         v-model="name"
                         type="text"
+                        @blur="$v.name.$touch()"
                     >
+                    <p v-if="$v.name.$anyError">
+                        Пожалуйста, введите имя!
+                    </p>
                 </div>
-                <div class="form-group">
+                <div
+                    class="form-group"
+                    :class="{invalid: $v.login.$error}"
+                >
                     <label
                         class="signup__label"
                         for="login"
@@ -33,9 +43,16 @@
                         id="login"
                         v-model="login"
                         type="text"
+                        @blur="$v.login.$touch()"
                     >
+                    <p v-if="$v.login.$anyError">
+                        Пожалуйста, введите логин (не менее 6 знаков)!
+                    </p>
                 </div>
-                <div class="form-group">
+                <div
+                    class="form-group"
+                    :class="{invalid: $v.email.$error}"
+                >
                     <label
                         class="signup__label"
                         for="email"
@@ -44,9 +61,16 @@
                         id="email"
                         v-model="email"
                         type="text"
+                        @blur="$v.email.$touch()"
                     >
+                    <p v-if="$v.email.$anyError">
+                        Пожалуйста, введите правильный email!
+                    </p>
                 </div>
-                <div class="form-group">
+                <div
+                    class="form-group"
+                    :class="{invalid: $v.password.$error}"
+                >
                     <label
                         class="signup__label"
                         for="password"
@@ -55,9 +79,16 @@
                         id="password"
                         v-model="password"
                         type="password"
+                        @blur="$v.password.$touch()"
                     >
+                    <p v-if="$v.password.$anyError">
+                        Пароль должен быть не менее 6 знаков!
+                    </p>
                 </div>
-                <div class="form-group">
+                <div
+                    class="form-group"
+                    :class="{invalid: $v.confirmPassword.$error}"
+                >
                     <label
                         class="signup__label"
                         for="confirmPassword"
@@ -66,16 +97,26 @@
                         id="confirmPassword"
                         v-model="confirmPassword"
                         type="password"
+                        @blur="$v.confirmPassword.$touch()"
                     >
+                    <p v-if="$v.confirmPassword.$anyError">
+                        Пароль должен совпадать!
+                    </p>
                 </div>
                 <div class="spacer" />
-                <app-button :value="value" />
+                <app-button
+                    :value="value"
+                    :disabled="$v.$invalid"
+                />
             </form>
         </div>
     </div>
 </template>
 
 <script>
+import {
+    required, email, minLength, sameAs,
+} from 'vuelidate/lib/validators';
 import Button from '../Button.vue';
 
 export default {
@@ -91,6 +132,26 @@ export default {
             password: '',
             confirmPassword: '',
         };
+    },
+    validations: {
+        email: {
+            required,
+            email,
+        },
+        name: {
+            required,
+        },
+        login: {
+            required,
+            minLen: minLength(6),
+        },
+        password: {
+            required,
+            minLen: minLength(6),
+        },
+        confirmPassword: {
+            sameAs: sameAs('password'),
+        },
     },
     methods: {
         async onSubmit() {
@@ -128,6 +189,18 @@ export default {
         border: 1px solid #d1cece;
         padding: 10px;
         border-radius: 25px;
+    }
+
+    .invalid input {
+        border: 1px solid red;
+    }
+
+    .invalid label {
+        color: red;
+    }
+
+    .invalid p {
+        color: red;
     }
 
 </style>

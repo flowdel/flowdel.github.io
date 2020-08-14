@@ -13,7 +13,10 @@
                 <div class="headline">
                     Вход
                 </div>
-                <div class="form-group">
+                <div
+                    class="form-group"
+                    :class="{invalid: $v.email.$error}"
+                >
                     <label
                         class="signin__label"
                         for="login"
@@ -22,9 +25,16 @@
                         id="login"
                         v-model="email"
                         type="text"
+                        @blur="$v.email.$touch()"
                     >
+                    <p v-if="$v.email.$anyError">
+                        Введите email.
+                    </p>
                 </div>
-                <div class="form-group">
+                <div
+                    class="form-group"
+                    :class="{invalid: $v.password.$error}"
+                >
                     <label
                         class="signin__label"
                         for="password"
@@ -33,7 +43,11 @@
                         id="password"
                         v-model="password"
                         type="password"
+                        @blur="$v.password.$touch()"
                     >
+                    <p v-if="$v.password.$anyError">
+                        Введите пароль.
+                    </p>
                 </div>
                 <div class="spacer" />
                 <app-button :value="value" />
@@ -43,8 +57,10 @@
 </template>
 
 <script>
+import {
+    required, email,
+} from 'vuelidate/lib/validators';
 import Button from '../Button.vue';
-// import firebase from '../../firebase.js';
 
 export default {
     components: {
@@ -56,6 +72,15 @@ export default {
             email: '',
             password: '',
         };
+    },
+    validations: {
+        email: {
+            required,
+            email,
+        },
+        password: {
+            required,
+        },
     },
     methods: {
         async onSubmit() {

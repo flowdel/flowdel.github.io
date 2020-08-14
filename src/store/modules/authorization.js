@@ -36,20 +36,24 @@ const mutations = {
 const actions = {
 
     async signin({ commit }, authData) {
-        const response = await signin(authData);
+        try {
+            const response = await signin(authData);
 
-        commit('authUser', {
-            idToken: response.data.jwt,
-            userId: response.data.user.id,
-        });
-        commit('storeUser', {
-            email: authData.email,
-            password: authData.password,
-            userId: response.data.user.id,
-            idToken: response.data.jwt,
-        });
-        setIdToken(response.data.jwt);
-        setUserId(response.data.user.id);
+            commit('authUser', {
+                idToken: response.data.jwt,
+                userId: response.data.user.id,
+            });
+            commit('storeUser', {
+                email: authData.email,
+                password: authData.password,
+                userId: response.data.user.id,
+                idToken: response.data.jwt,
+            });
+            setIdToken(response.data.jwt);
+            setUserId(response.data.user.id);
+        } catch (error) {
+            console.log(error.message);
+        }
     },
 
     async signup({ commit }, authData) {

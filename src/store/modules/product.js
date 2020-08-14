@@ -15,11 +15,10 @@ const mutations = {
 
 const actions = {
 
-    saveNewProduct({ commit, rootState }, product) {
+    saveNewProduct({ rootState }, product) {
         saveNewProduct(product, rootState.authorization.idToken)
             .then((response) => {
                 console.log(response);
-                commit('doSmth');
             })
             .catch((error) => console.log(error));
     },

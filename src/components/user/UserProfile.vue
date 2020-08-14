@@ -100,11 +100,10 @@ export default {
 
         getUserData() {
             // eslint-disable-next-line max-len
-            getUserData(this.$store.state.authorization.idToken, this.$store.state.authorization.userId)
+            getUserData(this.$store.state.authorization.idToken)
                 .then((response) => {
                     const user = response.data;
-                    console.log(user);
-                    this.setUserData(user[0]);
+                    this.setUserData(user);
                 })
                 .catch((error) => console.log(error));
         },
@@ -124,10 +123,14 @@ export default {
             this.user.email = this.email;
             this.user.number = this.number;
             this.user.info = this.info;
-            const formData = new FormData();
-            formData.append('files', this.file);
 
-            this.saveNewProfilePicture(formData);
+            if (this.file) {
+                const formData = new FormData();
+                formData.append('files', this.file);
+                this.saveNewProfilePicture(formData);
+            } else {
+                this.saveUserData(this.user);
+            }
         },
 
         saveNewProfilePicture(formData) {

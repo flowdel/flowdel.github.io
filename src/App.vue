@@ -2,6 +2,7 @@
     <div id="app">
         <app-header />
         <router-view />
+        <notifications group="auth" />
     </div>
 </template>
 
