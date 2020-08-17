@@ -10,9 +10,10 @@
                 :product="product"
             />
             <infinite-loading
-                v-if="dataLoaded"
+                v-if="loadedData"
                 @infinite="infiniteHandler"
             />
+            <app-loading v-if="!loadedData" />
         </div>
     </div>
 </template>
@@ -20,15 +21,17 @@
 <script>
 import ProductPreview from './ProductPreview.vue';
 import { loadProducts } from '../../services';
+import Loading from '../LoadingIndicator.vue';
 
 export default {
     components: {
         appProductPreview: ProductPreview,
+        appLoading: Loading,
     },
     data() {
         return {
             start: 0,
-            dataLoaded: false,
+            loadedData: false,
             products: [],
         };
     },
@@ -39,7 +42,7 @@ export default {
                     console.log('Data loading');
                     const allProducts = response.data;
                     this.products = allProducts.filter((product) => product.active === true);
-                    this.dataLoaded = true;
+                    this.loadedData = true;
                 })
                 .catch((error) => console.log(error));
         },
@@ -55,7 +58,6 @@ export default {
                         this.products = newProductList;
                         $state.loaded();
                     } else {
-                        this.dataLoaded = false;
                         $state.complete();
                     }
                 });

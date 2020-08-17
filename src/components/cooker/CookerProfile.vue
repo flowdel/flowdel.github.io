@@ -51,19 +51,22 @@
                 </div>
             </div>
         </div>
-        <div v-else>
+        <div v-if="!hasProducts && loadedUserData">
             У данного пользователя еще нет продуктов.
         </div>
+        <app-loading v-if="!loadedUserData" />
     </div>
 </template>
 
 <script>
 import axios from '../../axios-database';
 import ProductPreview from '../product/ProductPreview.vue';
+import Loading from '../LoadingIndicator.vue';
 
 export default {
     components: {
         appProductPreview: ProductPreview,
+        appLoading: Loading,
     },
     data() {
         return {
@@ -71,6 +74,7 @@ export default {
             products: [],
             prevProducts: [],
             hasProducts: false,
+            loadedUserData: false,
         };
     },
     methods: {
@@ -94,6 +98,7 @@ export default {
                 },
             })
                 .then((response) => {
+                    this.loadedUserData = true;
                     if (response.data.length > 0) {
                         this.hasProducts = true;
                         const allProducts = response.data;

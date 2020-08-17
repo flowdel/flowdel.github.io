@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-// import store from './store/store.js';
 
 import WelcomePage from './components/welcome/WelcomePage.vue';
 import SigninPage from './components/auth/Signin.vue';
@@ -12,7 +11,6 @@ import Cart from './components/cart/Cart.vue';
 import UserProfile from './components/user/UserProfile.vue';
 import CookerProfile from './components/cooker/CookerProfile.vue';
 import Confirm from './components/Confirm.vue';
-// import { getUserId } from './storage';
 import { getIdToken, getUserId } from './storage';
 import store from './store/store';
 
@@ -27,12 +25,21 @@ async function guard(to, from, next) {
         isAuthenticated = true;
     }
 
-    if (isAuthenticated) {
+    if (to.path === '/' || to.path === '/signin' || to.path === '/signup') {
+        if (isAuthenticated) {
+            await store.dispatch('tryAutoLogin', {
+                idToken,
+                userId,
+            });
+            next('/products');
+        } else {
+            next();
+        }
+    } else if (isAuthenticated) {
         await store.dispatch('tryAutoLogin', {
             idToken,
             userId,
         });
-
         next();
     } else {
         next('/signin');
@@ -41,8 +48,8 @@ async function guard(to, from, next) {
 
 const routes = [
     { path: '/', component: WelcomePage },
-    { path: '/signin', component: SigninPage },
-    { path: '/signup', component: SignupPage },
+    { path: '/signin', component: SigninPage, beforeEnter: guard },
+    { path: '/signup', component: SignupPage, beforeEnter: guard },
     {
         path: '/settings',
         name: 'UserProfile',

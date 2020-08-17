@@ -64,6 +64,7 @@
                 value="Закрыть объявление"
                 @click.native="removeProduct"
             />
+            <app-loading v-if="!loadedData" />
         </div>
     </div>
 </template>
@@ -71,17 +72,20 @@
 <script>
 import Button from '../Button.vue';
 import Gallery from '../Gallery.vue';
+import Loading from '../LoadingIndicator.vue';
 import { getProductData, removeProduct } from '../../services';
 
 export default {
     components: {
         appButton: Button,
         appGallery: Gallery,
+        appLoading: Loading,
     },
     data() {
         return {
             value: 'Добавить в корзину',
             product: null,
+            loadedData: false,
         };
     },
     computed: {
@@ -105,6 +109,7 @@ export default {
         getProductData(productId) {
             getProductData(productId, this.$store.state.authorization.idToken)
                 .then((response) => {
+                    this.loadedData = true;
                     [this.product] = response.data;
                 })
                 .catch((error) => console.log(error));
