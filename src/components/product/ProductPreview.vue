@@ -4,11 +4,13 @@
             :to="{name: 'ProductDetails', params: {id: product.id}}"
             class="product-preview"
         >
-            <img
+            <!-- <img
                 class="product-preview__img"
                 :src="`https://strapi.kameas.ru${product.image[0].url}`"
                 alt=""
-            >
+            > -->
+            <app-gallery :product="product" />
+
             <div class="product-preview__info">
                 <div class="product-preview__name">
                     {{ product.name }}
@@ -23,12 +25,25 @@
 
 <script>
 
+import Gallery from '../Gallery.vue';
+
 export default {
+    components: {
+        appGallery: Gallery,
+    },
     props: {
         product: {
             type: Object,
             default: () => ({}),
         },
+    },
+    data() {
+        return {
+            swiperOption: {
+                loop: true,
+            },
+
+        };
     },
 };
 </script>
@@ -53,5 +68,18 @@ export default {
 
     .product-preview__img {
         margin-bottom: 15px;
+        width: 0;
+        height: 0;
+        padding: 0 100% 65% 0;
+        background-size: cover;
     }
+
+    /* .swiper {
+        z-index: -1;
+    } */
+
+    .swiper-button-next, .swiper-button-prev {
+        opacity: 0;
+    }
+
 </style>

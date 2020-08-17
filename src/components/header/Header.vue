@@ -99,6 +99,12 @@ export default {
     .header__cart {
         color: #333131;
         text-decoration: none;
-        margin-right: 5px;
+        padding: 5px;
     }
+
+    .header__cart:hover {
+        cursor: pointer;
+        color: #b1aeae;
+    }
+
 </style>

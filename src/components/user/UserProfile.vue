@@ -131,6 +131,8 @@ export default {
             } else {
                 this.saveUserData(this.user);
             }
+
+            this.$router.go();
         },
 
         saveNewProfilePicture(formData) {

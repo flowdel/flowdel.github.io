@@ -43,13 +43,37 @@
                 Пожалуйста, введите число!
             </p>
             <label for="file">Загрузите фото блюда:</label>
-            <input
-                id="file"
-                class="new-product__input"
-                type="file"
-                @change="handleFileUpload"
-                @blur="$v.file.$touch()"
+            <div>
+                <file-upload
+                    ref="upload"
+                    v-model="files"
+                    class="new-product__upload-button"
+                    :multiple="true"
+                    post-action="/post.method"
+                    put-action="/put.method"
+                    @input-file="inputFile"
+                    @input-filter="inputFilter"
+                >
+                    <i class="fa fa-plus" />
+                    Выберите файлы
+                </file-upload>
+            </div>
+
+            <div
+                v-if="files.length > 0"
+                class="new-product__upload-list"
             >
+                Загруженные файлы:
+                <ul>
+                    <li
+                        v-for="file in files"
+                        :key="file.id"
+                    >
+                        <span>{{ file.name }}</span>
+                    </li>
+                </ul>
+            </div>
+
             <p
                 v-if="$v.file.$anyError"
                 class="error-message"
@@ -135,6 +159,7 @@ import {
     required, numeric,
 } from 'vuelidate/lib/validators';
 import Button from '../Button.vue';
+import { saveNewProduct, saveNewPicture } from '../../services';
 
 export default {
     components: {
@@ -149,7 +174,7 @@ export default {
             chosenPaymentMethod: '',
             chosenDeliveryMethod: '',
             vegan: false,
-            file: '',
+            files: [],
         };
     },
     validations: {
@@ -188,7 +213,6 @@ export default {
     methods: {
         saveProduct() {
             console.log('Продукт сохранен!');
-            console.log(this.author);
             const newProduct = {
                 name: this.name,
                 description: this.description,
@@ -201,16 +225,53 @@ export default {
             };
 
             const formData = new FormData();
-            formData.append('files', this.file);
-            this.$store.dispatch('saveNewPicture', {
-                formData,
-                newProduct,
-            });
-            this.$router.replace('/products');
+
+            // eslint-disable-next-line no-restricted-syntax
+            for (const file of this.files) {
+                formData.append('files', file.file, file.file.name);
+            }
+
+            saveNewPicture(formData, this.$store.state.authorization.idToken)
+                .then((response) => {
+                    const pictures = response.data;
+                    const pictureIds = [];
+                    // eslint-disable-next-line no-restricted-syntax
+                    for (const picture of pictures) {
+                        pictureIds.push(picture.id);
+                    }
+                    // eslint-disable-next-line no-param-reassign
+                    newProduct.image = pictureIds;
+                    saveNewProduct(newProduct, this.$store.state.authorization.idToken)
+                        .then((res) => {
+                            const productId = res.data.id;
+                            this.$router.replace(`/products/${productId}`);
+                        });
+                });
         },
 
-        handleFileUpload() {
-            [this.file] = this.$refs.uploadForm.file.files;
+        inputFile(newFile, oldFile) {
+            if (newFile && oldFile && !newFile.active && oldFile.active) {
+                console.log('response', newFile.response);
+                if (newFile.xhr) {
+                    console.log('status', newFile.xhr.status);
+                }
+            }
+        },
+
+        // eslint-disable-next-line consistent-return
+        inputFilter(newFile, oldFile, prevent) {
+            if (newFile && !oldFile) {
+                if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newFile.name)) {
+                    return prevent();
+                }
+            }
+            // eslint-disable-next-line no-param-reassign
+            newFile.blob = '';
+            const URL = window.URL || window.webkitURL;
+            if (URL && URL.createObjectURL) {
+                // eslint-disable-next-line no-param-reassign
+                newFile.blob = URL.createObjectURL(newFile.file);
+            }
         },
     },
 };
@@ -256,6 +317,30 @@ export default {
     .new-product__vegan label {
         color: inherit;
         font-size: 14px;
+    }
+
+    .new-product__upload-button {
+        width: 100%;
+        background-color: #ffffff;
+        border: 1px solid #d1cece;
+        font-size: 14px;
+        margin-bottom: 5px;
+        padding: 5px;
+    }
+
+    .new-product__upload-button:hover {
+        background-color: rgb(233, 230, 230);
+    }
+
+    .new-product__upload-list {
+        color: #969696;
+        font-size: 12px;
+        width: 100%;
+    }
+
+    .new-product__upload-list li {
+        font-size: 14px;
+        color: #333131;
     }
 
     .error-message {

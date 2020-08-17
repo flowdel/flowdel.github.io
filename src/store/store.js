@@ -3,7 +3,6 @@ import Vuex from 'vuex';
 
 import authorization from './modules/authorization';
 import cart from './modules/cart';
-import product from './modules/product';
 
 Vue.use(Vuex);
 
@@ -15,6 +14,5 @@ export default new Vuex.Store({
     modules: {
         authorization,
         cart,
-        product,
     },
 });

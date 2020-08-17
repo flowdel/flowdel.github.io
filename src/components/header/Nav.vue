@@ -71,7 +71,8 @@ export default {
         position: absolute;
         top: 100%;
         left: 0;
-        width: 100%
+        width: 100%;
+        z-index: 2
     }
 
     .nav__link {

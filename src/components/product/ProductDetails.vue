@@ -3,11 +3,7 @@
         v-if="product"
         class="product-detail"
     >
-        <img
-            class="product-detail__img"
-            :src="`https://strapi.kameas.ru${product.image[0].url}`"
-            alt=""
-        >
+        <app-gallery :product="product" />
         <div class="container">
             <div class="product-detail__info">
                 <div class="product-detail__name">
@@ -23,8 +19,14 @@
                 class="product-detail__author"
             >
                 <div
+                    v-if="product.author.image[0]"
                     class="product-detail__author-img"
                     :style="{backgroundImage: `url(https://strapi.kameas.ru${product.author.image[0].url})`}"
+                />
+                <div
+                    v-else
+                    class="product-detail__author-img"
+                    style="{backgroundImage: 'url(https://place-hold.it/30)'}"
                 />
                 <div class="product-detail__author-name">
                     {{ product.author.name }}
@@ -68,11 +70,13 @@
 
 <script>
 import Button from '../Button.vue';
-import axios from '../../axios-database';
+import Gallery from '../Gallery.vue';
+import { getProductData, removeProduct } from '../../services';
 
 export default {
     components: {
         appButton: Button,
+        appGallery: Gallery,
     },
     data() {
         return {
@@ -99,11 +103,7 @@ export default {
     },
     methods: {
         getProductData(productId) {
-            axios.get(`products?id=${productId}`, {
-                headers: {
-                    Authorization: `Bearer ${this.$store.state.authorization.idToken}`,
-                },
-            })
+            getProductData(productId, this.$store.state.authorization.idToken)
                 .then((response) => {
                     [this.product] = response.data;
                 })
@@ -121,8 +121,15 @@ export default {
             this.$store.dispatch('addItemToCart', productData);
         },
         removeProduct() {
-            this.$store.dispatch('removeProduct', this.product);
+        // eslint-disable-next-line no-param-reassign
+            this.product.active = false;
+            removeProduct(this.product, this.$store.state.authorization.idToken)
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((error) => console.log(error));
         },
+
     },
     // beforeRouteEnter(to, from, next) {
     //     next((vm) => {

@@ -16,7 +16,7 @@
         </div>
         <div class="product-preview__prices">
             <input
-                v-model="count"
+                v-model="item.count"
                 class="product-preview__amount"
                 type="number"
                 min="0"

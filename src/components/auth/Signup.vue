@@ -108,6 +108,12 @@
                     :value="value"
                     :disabled="$v.$invalid"
                 />
+                <div class="spacer" />
+                <router-link
+                    to="/signin"
+                >
+                    <app-button value="Войти" />
+                </router-link>
             </form>
         </div>
     </div>

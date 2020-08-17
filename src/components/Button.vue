@@ -17,7 +17,6 @@ export default {
 
 <style>
     .button {
-        display: block;
         color: #ffffff;
         background-color: #e6c269;
         border: 0;

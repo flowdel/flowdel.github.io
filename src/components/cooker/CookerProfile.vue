@@ -5,9 +5,15 @@
             class="cooker-profile"
         >
             <img
+                v-if="user.image[0]"
                 class="cooker-profile__img"
                 :src="`https://strapi.kameas.ru${user.image[0].url}`"
                 alt=""
+            >
+            <img
+                v-else
+                class="cooker-profile__img"
+                src="https://place-hold.it/30"
             >
             <div class="spacer" />
             <div class="container">

@@ -50,7 +50,13 @@
                     </p>
                 </div>
                 <div class="spacer" />
-                <app-button :value="value" />
+                <app-button value="Войти" />
+                <div class="spacer" />
+                <router-link
+                    to="/signup"
+                >
+                    <app-button value="Регистрация" />
+                </router-link>
             </form>
         </div>
     </div>
@@ -68,7 +74,6 @@ export default {
     },
     data() {
         return {
-            value: 'Войти',
             email: '',
             password: '',
         };
