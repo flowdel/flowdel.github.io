@@ -37,14 +37,6 @@ export default {
             default: () => ({}),
         },
     },
-    data() {
-        return {
-            swiperOption: {
-                loop: true,
-            },
-
-        };
-    },
 };
 </script>
 
@@ -73,10 +65,6 @@ export default {
         padding: 0 100% 65% 0;
         background-size: cover;
     }
-
-    /* .swiper {
-        z-index: -1;
-    } */
 
     .swiper-button-next, .swiper-button-prev {
         opacity: 0;

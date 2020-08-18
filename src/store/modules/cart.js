@@ -7,11 +7,11 @@ const state = {
 
 const mutations = {
     addItemToCart($state, item) {
-        console.log($state.cart);
         const productIndex = $state.cart.findIndex((product) => product.id === item.id);
         if (productIndex >= 0) {
             $state.cart[productIndex].count += 1;
         } else {
+            console.log($state.cart);
             $state.cart.push(item);
         }
     },
@@ -23,9 +23,9 @@ const mutations = {
 };
 
 const actions = {
-    addItemToCart({ commit, dispatch, $state }, item) {
+    addItemToCart({ commit, dispatch }, item) {
         commit('addItemToCart', item);
-        dispatch('saveCart', $state.cart);
+        dispatch('saveCart', state.cart);
     },
 
     saveCart({ commit }, cart) {
@@ -34,8 +34,11 @@ const actions = {
     },
 
     getCart({ commit }) {
-        const cart = JSON.parse(getCart());
-        commit('saveCart', cart);
+        getCart()
+            .then((response) => {
+                const cart = JSON.parse(response);
+                commit('saveCart', cart);
+            });
     },
 };
 

@@ -67,17 +67,20 @@
             value="Сохранить"
             @click.native="updateUserData"
         />
+        <app-loading v-if="!loadedData" />
     </div>
 </template>
 
 <script>
 import Button from '../Button.vue';
+import Loading from '../LoadingIndicator.vue';
 import { getUserData, saveNewProfilePicture, saveUserData } from '../../services';
 
 export default {
 
     components: {
         appButton: Button,
+        appLoading: Loading,
     },
     data() {
         return {
@@ -89,6 +92,7 @@ export default {
             info: '',
             isEditing: false,
             file: null,
+            loadedData: false,
         };
     },
 
@@ -102,6 +106,7 @@ export default {
             // eslint-disable-next-line max-len
             getUserData(this.$store.state.authorization.idToken)
                 .then((response) => {
+                    this.loadedData = true;
                     const user = response.data;
                     this.setUserData(user);
                 })

@@ -1,7 +1,6 @@
 <template>
     <swiper
         class="swiper"
-        :options="swiperOption"
     >
         <swiper-slide
             v-for="image in product.image"
@@ -37,14 +36,6 @@ export default {
             type: Object,
             default: () => ({}),
         },
-    },
-    data() {
-        return {
-            swiperOption: {
-                loop: true,
-            },
-
-        };
     },
 };
 </script>

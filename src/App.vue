@@ -38,42 +38,11 @@ export default {
             userId,
         });
     },
-    // async beforeRouteEnter(to, from, next) {
-    // const idToken = await getIdToken();
-    // const userId = await getUserId();
-    // console.log(`app-beforerouteenter ${idToken}`);
-    // next(() => {
-    //     store.dispatch('tryAutoLogin', {
-    //         idToken,
-    //         userId,
-    //     });
-    // });
 
-    //     next((vm) => {
-    //         // eslint-disable-next-line no-param-reassign
-    //         vm.test = 123;
-    //     });
-    // },
-    // async created() {
-    //     const idToken = await getIdToken();
-    //     const userId = await getUserId();
-    //     this.$store.dispatch('tryAutoLogin', {
-    //         idToken,
-    //         userId,
-    //     });
-    // },
 };
 </script>
 
 <style>
-/* #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-} */
 
   *,
   *::before,

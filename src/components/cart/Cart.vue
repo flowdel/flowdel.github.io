@@ -1,10 +1,13 @@
 <template>
     <div class="container">
         <div class="spacer" />
-        <div v-if="cart">
-            <div class="headline">
-                Корзина
-            </div>
+        <div class="headline">
+            Корзина
+        </div>
+        <div
+            v-if="cart.length > 0"
+            class="cart cart_full"
+        >
             <app-cart-item
                 v-for="item in cart"
                 :key="item.id"
@@ -23,7 +26,11 @@
                 @click.native="clearCart"
             />
         </div>
-        <div v-else>
+        <div
+            v-else
+            class="cart cart_empty"
+        >
+            <i class="far fa-sad-tear" />
             Здесь пока ничего нет...
         </div>
     </div>
@@ -32,9 +39,9 @@
 <script>
 import CartItem from './CartItem.vue';
 import Button from '../Button.vue';
+import { removeCart } from '../../storage';
 
 export default {
-
     components: {
         appCartItem: CartItem,
         appButton: Button,
@@ -44,17 +51,16 @@ export default {
             return this.$store.getters.cart;
         },
     },
-
     methods: {
         confirmCart() {
+            this.clearCart();
             this.$router.replace('/confirm');
         },
 
         clearCart() {
-            localStorage.removeItem('cart');
+            removeCart();
         },
     },
-
     beforeRouteEnter(to, from, next) {
         next((vm) => {
             vm.$store.dispatch('getCart');
@@ -64,4 +70,19 @@ export default {
 </script>
 
 <style>
+    .cart_empty {
+        height: calc(100vh - 200px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+        text-align: center;
+        line-height: 3em;
+    }
+
+    .cart_empty i {
+        font-size: 100px;
+        color: #d1cece;
+    }
 </style>

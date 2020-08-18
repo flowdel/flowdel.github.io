@@ -17,7 +17,10 @@
             </router-link>
 
             <div class="header__nav">
-                <app-nav v-if="showNav" />
+                <app-nav
+                    v-if="showNav"
+                    v-click-outside="hideNavigation"
+                />
             </div>
 
             <div class="header__actions">
@@ -37,21 +40,23 @@
 </template>
 
 <script>
+import ClickOutside from 'vue-click-outside';
 import Nav from './Nav.vue';
 import NavToggle from './NavToggle.vue';
 
 export default {
-
     components: {
         appNav: Nav,
         appNavToggle: NavToggle,
+    },
+    directives: {
+        ClickOutside,
     },
     data() {
         return {
             showNav: false,
         };
     },
-
     computed: {
         productsAmount() {
             return this.$store.state.cart.cart.length;
@@ -62,9 +67,18 @@ export default {
             this.showNav = false;
         },
     },
+    mounted() {
+        // prevent click outside event with popupItem.
+        this.popupItem = this.$el;
+    },
     methods: {
         showNavigation() {
             this.showNav = !this.showNav;
+        },
+        hideNavigation() {
+            if (this.showNav) {
+                this.showNav = false;
+            }
         },
     },
 };
@@ -106,5 +120,4 @@ export default {
         cursor: pointer;
         color: #b1aeae;
     }
-
 </style>

@@ -173,7 +173,7 @@ export default {
             price: null,
             chosenPaymentMethod: '',
             chosenDeliveryMethod: '',
-            vegan: false,
+            vegan: null,
             files: [],
         };
     },

@@ -105,7 +105,7 @@
                 </div>
                 <div class="spacer" />
                 <app-button
-                    :value="value"
+                    value="Зарегистрироваться"
                     :disabled="$v.$invalid"
                 />
                 <div class="spacer" />
@@ -131,7 +131,6 @@ export default {
     },
     data() {
         return {
-            value: 'Зарегистрироваться',
             name: '',
             login: '',
             email: '',
@@ -167,7 +166,6 @@ export default {
                 email: this.email,
                 password: this.password,
             });
-
             this.$router.replace('/products');
         },
     },
@@ -175,7 +173,6 @@ export default {
 </script>
 
 <style>
-
     .signup {
         text-align: center;
     }
@@ -196,17 +193,11 @@ export default {
         padding: 10px;
         border-radius: 25px;
     }
+    .invalid {
+        color: red;
+    }
 
     .invalid input {
         border: 1px solid red;
     }
-
-    .invalid label {
-        color: red;
-    }
-
-    .invalid p {
-        color: red;
-    }
-
 </style>
