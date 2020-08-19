@@ -9,7 +9,7 @@
             <div
                 class="product-preview__img"
                 :style="{
-                    backgroundImage: `url(https://strapi.kameas.ru${image.url})`,
+                    backgroundImage: `url(${SERVER_URL}${image.url})`,
                 }"
             />
         </swiper-slide>
@@ -22,6 +22,7 @@
 
 <script>
 import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper';
+import { SERVER_URL } from '@/constants';
 
 export default {
     components: {
@@ -36,6 +37,11 @@ export default {
             type: Object,
             default: () => ({}),
         },
+    },
+    data() {
+        return {
+            SERVER_URL,
+        };
     },
 };
 </script>

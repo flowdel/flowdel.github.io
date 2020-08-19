@@ -50,12 +50,12 @@
                     </p>
                 </div>
                 <div class="spacer" />
-                <app-button value="Войти" />
+                <app-button>Войти</app-button>
                 <div class="spacer" />
                 <router-link
                     to="/signup"
                 >
-                    <app-button value="Регистрация" />
+                    <app-button>Регистрация</app-button>
                 </router-link>
             </form>
         </div>

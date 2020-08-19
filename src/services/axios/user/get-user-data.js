@@ -1,8 +1,8 @@
-import axios from '../../../axios-database';
+import axios from '@/axios-database';
 
 // eslint-disable-next-line import/prefer-default-export
-export async function getUserData(idToken) {
-    return axios.get('users/me', {
+export async function getUserData(idToken, userId) {
+    return axios.get(`users?id=${userId}`, {
         headers: {
             Authorization: `Bearer ${idToken}`,
         },

@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { getCart, setCart } from '../../storage';
+import { getCart, setCart } from '@/storage';
 
 const state = {
     cart: [],
@@ -11,7 +11,6 @@ const mutations = {
         if (productIndex >= 0) {
             $state.cart[productIndex].count += 1;
         } else {
-            console.log($state.cart);
             $state.cart.push(item);
         }
     },
@@ -37,7 +36,9 @@ const actions = {
         getCart()
             .then((response) => {
                 const cart = JSON.parse(response);
-                commit('saveCart', cart);
+                if (cart) {
+                    commit('saveCart', cart);
+                }
             });
     },
 };

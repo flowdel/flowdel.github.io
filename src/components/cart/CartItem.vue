@@ -3,7 +3,7 @@
         <div class="product-preview product-preview_type_vertical">
             <div class="product-preview__description">
                 <img
-                    :src="`https://strapi.kameas.ru${item.image[0].url}`"
+                    :src="`${SERVER_URL}${item.image[0].url}`"
                     alt=""
                 >
                 <div class="product-preview__info">
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import { SERVER_URL } from '@/constants';
 
 export default {
     props: {
@@ -55,6 +56,11 @@ export default {
             type: Object,
             default: () => ({}),
         },
+    },
+    data() {
+        return {
+            SERVER_URL,
+        };
     },
     computed: {
         count() {
@@ -69,7 +75,6 @@ export default {
         decreaseCount() {
             this.item.count -= 1;
         },
-
     },
 };
 </script>

@@ -11,15 +11,16 @@
             <label for="user-profile__name">Имя:</label>
             <input
                 id="user-profile__name"
-                v-model="name"
+                v-model="user.name"
                 class="user-profile__input"
                 type="text"
                 :disabled="!isEditing"
             >
+
             <label for="user-profile__address">Адрес:</label>
             <input
                 id="user-profile__address"
-                v-model="address"
+                v-model="user.address"
                 class="user-profile__input"
                 type="text"
                 :disabled="!isEditing"
@@ -27,7 +28,7 @@
             <label for="user-profile__email">Почта:</label>
             <input
                 id="user-profile__email"
-                v-model="email"
+                v-model="user.email"
                 class="user-profile__input"
                 type="email"
                 :disabled="!isEditing"
@@ -35,7 +36,7 @@
             <label for="user-profile__number">Телефон:</label>
             <input
                 id="user-profile__number"
-                v-model="number"
+                v-model="user.number"
                 class="user-profile__input"
                 type="text"
                 :disabled="!isEditing"
@@ -51,7 +52,7 @@
             <label for="user-profile__info">О себе:</label>
             <input
                 id="user-profile__info"
-                v-model="info"
+                v-model="user.info"
                 class="user-profile__input"
                 type="text"
                 :disabled="!isEditing"
@@ -59,22 +60,25 @@
         </form>
         <app-button
             v-if="!isEditing"
-            value="Редактировать"
             @click.native="editUserData"
-        />
+        >
+            Редактировать
+        </app-button>
         <app-button
             v-else
-            value="Сохранить"
             @click.native="updateUserData"
-        />
+        >
+            Сохранить
+        </app-button>
         <app-loading v-if="!loadedData" />
     </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import { getUserData, saveNewProfilePicture, saveUserData } from '@/services';
 import Button from '../Button.vue';
 import Loading from '../LoadingIndicator.vue';
-import { getUserData, saveNewProfilePicture, saveUserData } from '../../services';
 
 export default {
 
@@ -84,46 +88,41 @@ export default {
     },
     data() {
         return {
-            user: null,
-            name: '',
-            address: '',
-            email: '',
-            number: '',
-            info: '',
+            user: {},
             isEditing: false,
             file: null,
             loadedData: false,
         };
     },
+    computed: {
+        ...mapState({
+            idToken: (state) => state.authorization.idToken,
+            userId: (state) => state.authorization.userId,
+        }),
+    },
 
+    created() {
+        this.getUserData();
+    },
     methods: {
-
         editUserData() {
             this.isEditing = !this.isEditing;
         },
 
         getUserData() {
             // eslint-disable-next-line max-len
-            getUserData(this.$store.state.authorization.idToken)
+            getUserData(this.idToken, this.userId)
                 .then((response) => {
                     this.loadedData = true;
-                    const user = response.data;
-                    this.setUserData(user);
-                })
-                .catch((error) => console.log(error));
+                    this.setUserData(response.data);
+                });
         },
 
         setUserData(user) {
-            this.user = user;
-            this.name = user.name;
-            this.address = user.address;
-            this.email = user.email;
-            this.number = user.number;
-            this.info = user.info;
+            [this.user] = user;
         },
 
         updateUserData() {
-            this.user.name = this.name;
             this.user.address = this.address;
             this.user.email = this.email;
             this.user.number = this.number;
@@ -136,38 +135,28 @@ export default {
             } else {
                 this.saveUserData(this.user);
             }
-
+            this.buttonValue = 'Редактировать';
             this.$router.go();
         },
 
         saveNewProfilePicture(formData) {
-            saveNewProfilePicture(this.$store.state.authorization.idToken, formData)
+            saveNewProfilePicture(this.idToken, formData)
                 .then((response) => {
                     const pictureId = response.data[0].id;
                     this.user.image = pictureId;
                     this.saveUserData(this.user);
-                })
-                .catch((error) => console.log(error));
+                });
         },
 
         saveUserData(user) {
             // eslint-disable-next-line max-len
-            saveUserData(this.$store.state.authorization.idToken, this.$store.state.authorization.userId, user)
-                .then((response) => {
-                    console.log(response);
-                })
-                .catch((error) => console.log(error));
+            saveUserData(this.idToken, this.userId, user);
         },
 
         handleFileUpload(event) {
             [this.file] = event.target.files;
         },
 
-    },
-    beforeRouteEnter(to, from, next) {
-        next((vm) => {
-            vm.getUserData();
-        });
     },
 };
 </script>

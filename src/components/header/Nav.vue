@@ -44,13 +44,15 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
     computed: {
+        ...mapState({
+            userId: (state) => state.authorization.userId,
+        }),
         isAuthorized() {
             return this.$store.getters.isAuthorized;
-        },
-        userId() {
-            return this.$store.state.authorization.userId;
         },
     },
     methods: {

@@ -19,8 +19,10 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
+import { loadProducts } from '@/services';
 import ProductPreview from './ProductPreview.vue';
-import { loadProducts } from '../../services';
 import Loading from '../LoadingIndicator.vue';
 
 export default {
@@ -35,20 +37,29 @@ export default {
             products: [],
         };
     },
+    computed: {
+        ...mapState({
+            idToken: (state) => state.authorization.idToken,
+        }),
+        isAuthorized() {
+            return this.$store.getters.isAuthorized;
+        },
+    },
+    created() {
+        this.fetchProducts(0);
+    },
     methods: {
         fetchProducts(start) {
-            loadProducts(this.$store.state.authorization.idToken, start)
+            loadProducts(this.idToken, start)
                 .then((response) => {
-                    console.log('Data loading');
                     const allProducts = response.data;
                     this.products = allProducts.filter((product) => product.active === true);
                     this.loadedData = true;
-                })
-                .catch((error) => console.log(error));
+                });
         },
         infiniteHandler($state) {
             this.start += 10;
-            loadProducts(this.$store.state.authorization.idToken, this.start)
+            loadProducts(this.idToken, this.start)
                 .then((response) => {
                     if (response.data.length > 0) {
                         const allProducts = response.data;
@@ -62,12 +73,6 @@ export default {
                     }
                 });
         },
-    },
-
-    beforeRouteEnter(to, from, next) {
-        next((vm) => {
-            vm.fetchProducts(0);
-        });
     },
 };
 </script>

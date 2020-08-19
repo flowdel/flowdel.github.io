@@ -4,11 +4,6 @@
             :to="{name: 'ProductDetails', params: {id: product.id}}"
             class="product-preview"
         >
-            <!-- <img
-                class="product-preview__img"
-                :src="`https://strapi.kameas.ru${product.image[0].url}`"
-                alt=""
-            > -->
             <app-gallery :product="product" />
 
             <div class="product-preview__info">

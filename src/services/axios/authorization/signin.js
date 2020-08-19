@@ -1,4 +1,4 @@
-import axios from '../../../axios-database';
+import axios from '@/axios-database';
 
 // eslint-disable-next-line import/prefer-default-export
 export async function signin(authData) {

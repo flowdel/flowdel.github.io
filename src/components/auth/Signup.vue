@@ -105,14 +105,15 @@
                 </div>
                 <div class="spacer" />
                 <app-button
-                    value="Зарегистрироваться"
                     :disabled="$v.$invalid"
-                />
+                >
+                    Зарегистрироваться
+                </app-button>
                 <div class="spacer" />
                 <router-link
                     to="/signin"
                 >
-                    <app-button value="Войти" />
+                    <app-button>Войти</app-button>
                 </router-link>
             </form>
         </div>

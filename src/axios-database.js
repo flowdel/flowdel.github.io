@@ -1,5 +1,5 @@
 import axios from 'axios';
-import './notifications';
+import './plugins/notifications';
 import Vue from 'vue';
 
 const instance = axios.create({
@@ -7,13 +7,18 @@ const instance = axios.create({
 });
 
 instance.interceptors.response.use((response) => response, (error) => {
-    Vue.notify({
-        group: 'auth',
-        type: 'error',
-        title: 'ERROR',
-        text: 'Please provide valid email address!',
-    });
-    Promise.reject(error);
+    // eslint-disable-next-line no-restricted-syntax
+    if (error.message.messages) {
+        error.message.messages.forEach((message) => {
+            Vue.notify({
+                group: 'auth',
+                type: 'error',
+                title: 'ERROR',
+                text: message,
+            });
+            Promise.reject(error);
+        });
+    }
 });
 
 export default instance;

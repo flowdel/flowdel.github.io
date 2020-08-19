@@ -51,7 +51,6 @@
                     :multiple="true"
                     post-action="/post.method"
                     put-action="/put.method"
-                    @input-file="inputFile"
                     @input-filter="inputFilter"
                 >
                     <i class="fa fa-plus" />
@@ -148,9 +147,10 @@
         </form>
         <div class="spacer" />
         <app-button
-            :value="value"
             @click.native="saveProduct"
-        />
+        >
+            Сохранить
+        </app-button>
     </div>
 </template>
 
@@ -158,8 +158,9 @@
 import {
     required, numeric,
 } from 'vuelidate/lib/validators';
+import { mapState } from 'vuex';
+import { saveNewProduct, saveNewPicture } from '@/services';
 import Button from '../Button.vue';
-import { saveNewProduct, saveNewPicture } from '../../services';
 
 export default {
     components: {
@@ -167,7 +168,6 @@ export default {
     },
     data() {
         return {
-            value: 'Сохранить',
             name: '',
             description: '',
             price: null,
@@ -200,9 +200,9 @@ export default {
 
     },
     computed: {
-        author() {
-            return this.$store.state.authorization.userId;
-        },
+        ...mapState({
+            author: (state) => state.authorization.userId,
+        }),
         delivery() {
             return this.chosenDeliveryMethod === 'На дом' ? 'deliveryToHome' : 'pickUp';
         },
@@ -212,7 +212,6 @@ export default {
     },
     methods: {
         saveProduct() {
-            console.log('Продукт сохранен!');
             const newProduct = {
                 name: this.name,
                 description: this.description,
@@ -239,7 +238,6 @@ export default {
                     for (const picture of pictures) {
                         pictureIds.push(picture.id);
                     }
-                    // eslint-disable-next-line no-param-reassign
                     newProduct.image = pictureIds;
                     saveNewProduct(newProduct, this.$store.state.authorization.idToken)
                         .then((res) => {
@@ -249,20 +247,11 @@ export default {
                 });
         },
 
-        inputFile(newFile, oldFile) {
-            if (newFile && oldFile && !newFile.active && oldFile.active) {
-                console.log('response', newFile.response);
-                if (newFile.xhr) {
-                    console.log('status', newFile.xhr.status);
-                }
-            }
-        },
-
-        // eslint-disable-next-line consistent-return
         inputFilter(newFile, oldFile, prevent) {
             if (newFile && !oldFile) {
                 if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newFile.name)) {
-                    return prevent();
+                    prevent();
+                    return;
                 }
             }
             // eslint-disable-next-line no-param-reassign
@@ -346,6 +335,10 @@ export default {
     .error-message {
         font-size: 14px;
         color: red
+    }
+
+    select {
+        border: 1px solid #d1cece;
     }
 
 </style>

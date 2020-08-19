@@ -16,11 +16,6 @@ export default {
     components: {
         appHeader: Header,
     },
-    data() {
-        return {
-            test: 'pepe',
-        };
-    },
     async created() {
         const path = localStorage.getItem('path');
 

@@ -41,6 +41,7 @@
 
 <script>
 import ClickOutside from 'vue-click-outside';
+import { mapState } from 'vuex';
 import Nav from './Nav.vue';
 import NavToggle from './NavToggle.vue';
 
@@ -58,9 +59,9 @@ export default {
         };
     },
     computed: {
-        productsAmount() {
-            return this.$store.state.cart.cart.length;
-        },
+        ...mapState({
+            productsAmount: (state) => state.cart.cart.length,
+        }),
     },
     watch: {
         $route() {

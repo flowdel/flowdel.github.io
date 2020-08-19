@@ -5,6 +5,7 @@ export * from './products/save-new-picture';
 export * from './products/load-products';
 export * from './products/remove-product';
 export * from './products/get-product-data';
+export * from './products/get-user-products';
 export * from './user/get-user-data';
 export * from './user/save-new-profile-picture';
 export * from './user/save-user-data';

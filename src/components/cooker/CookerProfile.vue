@@ -4,13 +4,13 @@
             <img
                 v-if="user.image[0]"
                 class="cooker-profile__img"
-                :src="`https://strapi.kameas.ru${user.image[0].url}`"
+                :src="`${SERVER_URL}${user.image[0].url}`"
                 alt=""
             >
             <img
                 v-else
                 class="cooker-profile__img"
-                src="https://strapi.kameas.ru/uploads/empty_profile_536f5a8db1.png"
+                src="../../../images/empty_profile.png"
             >
             <div class="spacer" />
             <div class="container">
@@ -58,7 +58,10 @@
 </template>
 
 <script>
-import axios from '../../axios-database';
+import { SERVER_URL, EMPTY_IMAGE_URL } from '@/constants';
+
+import { mapState } from 'vuex';
+import { getUserProducts, getUserData } from '@/services';
 import ProductPreview from '../product/ProductPreview.vue';
 import Loading from '../LoadingIndicator.vue';
 
@@ -69,52 +72,50 @@ export default {
     },
     data() {
         return {
-            user: null,
+            user: {},
             products: [],
             prevProducts: [],
             hasProducts: false,
             loadedData: false,
+            SERVER_URL,
+            EMPTY_IMAGE_URL,
         };
+    },
+    computed: {
+        ...mapState({
+            idToken: (state) => state.authorization.idToken,
+        }),
+    },
+
+    created() {
+        this.getUserData(this.$route.params.id);
     },
     methods: {
         getUserData(userId) {
-            axios.get(`users?id=${userId}`, {
-                headers: {
-                    Authorization: `Bearer ${this.$store.state.authorization.idToken}`,
-                },
-            })
+            getUserData(this.idToken, userId)
                 .then((response) => {
                     [this.user] = response.data;
                     this.getUserProducts(this.user.id);
-                })
-                .catch((error) => console.log(error));
+                });
         },
 
         getUserProducts(userId) {
-            axios.get(`products?author=${userId}`, {
-                headers: {
-                    Authorization: `Bearer ${this.$store.state.authorization.idToken}`,
-                },
-            })
+            getUserProducts(userId, this.idToken, true)
                 .then((response) => {
                     this.loadedData = true;
                     if (response.data.length > 0) {
                         this.hasProducts = true;
-                        const allProducts = response.data;
-                        this.products = allProducts.filter((product) => product.active === true);
+                        this.products = response.data;
                         // eslint-disable-next-line max-len
-                        this.prevProducts = allProducts.filter((product) => product.active === false);
+                        getUserProducts(userId, this.idToken, false)
+                            .then((res) => {
+                                this.prevProducts = res.data;
+                            });
                     } else {
                         this.hasProducts = false;
                     }
-                })
-                .catch((error) => console.log(error));
+                });
         },
-    },
-    beforeRouteEnter(to, from, next) {
-        next((vm) => {
-            vm.getUserData(vm.$route.params.id);
-        });
     },
 };
 </script>

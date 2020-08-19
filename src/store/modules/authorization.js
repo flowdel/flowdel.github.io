@@ -5,9 +5,9 @@ import Vuex from 'vuex';
 // import router from '../../router';
 import {
     setIdToken, removeIdToken, setUserId, removeUserId,
-} from '../../storage';
+} from '@/storage';
 
-import { signin, signup } from '../../services';
+import { signin, signup } from '@/services';
 
 Vue.use(Vuex);
 
@@ -51,8 +51,8 @@ const actions = {
             });
             setIdToken(response.data.jwt);
             setUserId(response.data.user.id);
-        } catch (error) {
-            console.log(error.message);
+        } catch {
+            //
         }
     },
 

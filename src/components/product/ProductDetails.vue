@@ -21,12 +21,7 @@
                 <div
                     v-if="product.author.image[0]"
                     class="product-detail__author-img"
-                    :style="{backgroundImage: `url(https://strapi.kameas.ru${product.author.image[0].url})`}"
-                />
-                <div
-                    v-else
-                    class="product-detail__author-img"
-                    style="{backgroundImage: 'url(https://place-hold.it/30)'}"
+                    :style="{backgroundImage: `url(${SERVER_URL}${product.author.image[0].url})`}"
                 />
                 <div class="product-detail__author-name">
                     {{ product.author.name }}
@@ -55,25 +50,29 @@
 
             <app-button
                 v-if="product.active"
-                :value="value"
                 @click.native="addItemToCart"
-            />
+            >
+                Добавить в корзину
+            </app-button>
             <div class="spacer" />
             <app-button
                 v-if="authUser && product.active"
-                value="Закрыть объявление"
                 @click.native="removeProduct"
-            />
+            >
+                Закрыть объявление
+            </app-button>
             <app-loading v-if="!loadedData" />
         </div>
     </div>
 </template>
 
 <script>
+import { SERVER_URL, EMPTY_IMAGE_URL } from '@/constants';
+import { mapState } from 'vuex';
+import { getProductData, removeProduct } from '@/services';
 import Button from '../Button.vue';
 import Gallery from '../Gallery.vue';
 import Loading from '../LoadingIndicator.vue';
-import { getProductData, removeProduct } from '../../services';
 
 export default {
     components: {
@@ -83,12 +82,17 @@ export default {
     },
     data() {
         return {
-            value: 'Добавить в корзину',
             product: null,
             loadedData: false,
+            SERVER_URL,
+            EMPTY_IMAGE_URL,
         };
     },
     computed: {
+        ...mapState({
+            idToken: (state) => state.authorization.idToken,
+            userId: (state) => state.authorization.userId,
+        }),
         paymentMethod() {
             return this.product.paymentMethod === 'cash' ? 'Наличные' : 'Перевод на карту';
         },
@@ -99,7 +103,7 @@ export default {
             return this.product.vegan ? 'Да' : 'Нет';
         },
         authUser() {
-            return this.product.author.id === this.$store.state.authorization.userId;
+            return this.product.author.id === this.userId;
         },
     },
     created() {
@@ -107,12 +111,11 @@ export default {
     },
     methods: {
         getProductData(productId) {
-            getProductData(productId, this.$store.state.authorization.idToken)
+            getProductData(productId, this.idToken)
                 .then((response) => {
                     this.loadedData = true;
                     [this.product] = response.data;
-                })
-                .catch((error) => console.log(error));
+                });
         },
 
         addItemToCart() {
@@ -126,21 +129,11 @@ export default {
             this.$store.dispatch('addItemToCart', productData);
         },
         removeProduct() {
-        // eslint-disable-next-line no-param-reassign
             this.product.active = false;
-            removeProduct(this.product, this.$store.state.authorization.idToken)
-                .then((response) => {
-                    console.log(response);
-                })
-                .catch((error) => console.log(error));
+            removeProduct(this.product, this.idToken);
         },
 
     },
-    // beforeRouteEnter(to, from, next) {
-    //     next((vm) => {
-    //         vm.getProductData(vm.$route.params.id);
-    //     });
-    // },
 };
 </script>
 

@@ -17,14 +17,16 @@
             </app-cart-item>
             <div class="spacer" />
             <app-button
-                value="Подтвердить"
                 @click.native="confirmCart"
-            />
+            >
+                Подтвердить
+            </app-button>
             <div class="spacer" />
             <app-button
-                value="Очистить корзину"
                 @click.native="clearCart"
-            />
+            >
+                Очистить корзину
+            </app-button>
         </div>
         <div
             v-else
@@ -37,9 +39,10 @@
 </template>
 
 <script>
+import { removeCart } from '@/storage';
+import { mapGetters } from 'vuex';
 import CartItem from './CartItem.vue';
 import Button from '../Button.vue';
-import { removeCart } from '../../storage';
 
 export default {
     components: {
@@ -47,9 +50,12 @@ export default {
         appButton: Button,
     },
     computed: {
-        cart() {
-            return this.$store.getters.cart;
-        },
+        ...mapGetters([
+            'cart',
+        ]),
+    },
+    created() {
+        this.$store.dispatch('getCart');
     },
     methods: {
         confirmCart() {
@@ -59,12 +65,8 @@ export default {
 
         clearCart() {
             removeCart();
+            this.$router.go();
         },
-    },
-    beforeRouteEnter(to, from, next) {
-        next((vm) => {
-            vm.$store.dispatch('getCart');
-        });
     },
 };
 </script>

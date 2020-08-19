@@ -1,5 +1,5 @@
 <template>
-    <div class="ready__container">
+    <div class="ready">
         <i class="fas fa-check-circle" />
         <div class="headline">
             Готово!
@@ -8,7 +8,7 @@
 </template>
 
 <style>
-    .ready__container {
+    .ready {
         height: calc(100vh - 100px);
         display: flex;
         flex-direction: column;
@@ -16,7 +16,7 @@
         align-items: center;
     }
 
-    .ready__container i {
+    .ready i {
         font-size: 150px;
         color: #d1cece;
         margin-bottom: 15px;
