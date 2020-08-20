@@ -8,6 +8,9 @@ const instance = axios.create({
 
 instance.interceptors.response.use((response) => response, (error) => {
     // eslint-disable-next-line no-restricted-syntax
+
+    console.log(JSON.stringify(error));
+
     if (error.message.messages) {
         error.message.messages.forEach((message) => {
             Vue.notify({
@@ -16,9 +19,10 @@ instance.interceptors.response.use((response) => response, (error) => {
                 title: 'ERROR',
                 text: message,
             });
-            Promise.reject(error);
         });
     }
+
+    Promise.reject(error);
 });
 
 export default instance;
