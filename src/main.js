@@ -10,6 +10,9 @@ import router from './router';
 // If you use Swiper 6.0.0 or higher
 import 'swiper/swiper-bundle.css';
 
+import vuetify from './plugins/vuetify';
+import '@babel/polyfill';
+
 const VueUploadComponent = require('vue-upload-component');
 
 Vue.component('file-upload', VueUploadComponent);
@@ -23,5 +26,6 @@ Vue.use(InfiniteLoading, { /* options */ });
 new Vue({
     render: (h) => h(App),
     router,
+    vuetify,
     store,
 }).$mount('#app');

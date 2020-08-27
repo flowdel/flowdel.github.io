@@ -1,8 +1,12 @@
 <template>
     <div>
-        <div class="cooker-profile">
+        <app-loading v-if="!loadedData" />
+        <div
+            v-else
+            class="cooker-profile"
+        >
             <img
-                v-if="user.image[0]"
+                v-if="user.image && user.image[0]"
                 class="cooker-profile__img"
                 :src="`${SERVER_URL}${user.image[0].url}`"
                 alt=""
@@ -13,7 +17,12 @@
                 src="../../../images/empty_profile.png"
             >
             <div class="spacer" />
-            <div class="container">
+
+            <v-container
+                fluid
+                px-4
+                py-0
+            >
                 <div class="headline">
                     {{ user.name }}
                 </div>
@@ -51,9 +60,8 @@
                 <div v-if="!hasProducts && loadedData">
                     У данного пользователя еще нет продуктов.
                 </div>
-            </div>
+            </v-container>
         </div>
-        <app-loading v-if="!loadedData" />
     </div>
 </template>
 

@@ -6,7 +6,7 @@
         <div class="container">
             <img
                 class="welcome-logo"
-                src="../../../images/logo_2.png"
+                src="../../../images/logo_3.png"
                 alt=""
             >
             <h1 class="welcome-headline">
@@ -14,18 +14,23 @@
             </h1>
 
             <div class="welcome-links">
-                <router-link
-                    class="welcome-link"
+                <v-btn
+                    color="primary"
+                    dark
+                    width="280"
                     to="/signin"
                 >
                     Войти
-                </router-link>
-                <router-link
-                    class="welcome-link"
+                </v-btn>
+                <v-btn
+                    color="primary"
+                    outlined
+                    dark
+                    width="280"
                     to="/signup"
                 >
-                    Зарегистрироваться
-                </router-link>
+                    Зареегистрироваться
+                </v-btn>
             </div>
         </div>
     </div>

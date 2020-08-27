@@ -1,48 +1,54 @@
 <template>
     <div>
-        <div class="product-preview product-preview_type_vertical">
-            <div class="product-preview__description">
-                <img
-                    :src="`${SERVER_URL}${item.image[0].url}`"
-                    alt=""
-                >
-                <div class="product-preview__info">
-                    <div class="product-preview__name">
-                        {{ item.name }}
-                    </div>
-                    <div class="product-preview__price">
-                        {{ item.price }} руб.
+        <v-card class="pa-3">
+            <div class="product-preview product-preview_type_vertical">
+                <div class="product-preview__description">
+                    <div class="product-preview__info">
+                        <div class="subtitle-1">
+                            {{ item.name }}
+                        </div>
+                        <div class="caption">
+                            {{ item.price }} руб.
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="product-preview__prices">
-                <div class="product-preview__amount">
-                    <div
-                        class="product-preview__prices-plus-button"
-                        @click="increaseCount"
-                    >
-                        <i class="fas fa-plus-circle" />
+                <div class="product-preview__prices">
+                    <div class="product-preview__amount">
+                        <v-btn
+                            class="mx-2"
+                            fab
+                            x-small
+                            color="primary"
+                            elevation="0"
+                            @click="increaseCount"
+                        >
+                            <v-icon dark>
+                                mdi-plus
+                            </v-icon>
+                        </v-btn>
+                        <span>
+                            {{ item.count }}
+                        </span>
+                        <v-btn
+                            class="mx-2"
+                            fab
+                            x-small
+                            color="primary"
+                            elevation="0"
+                            @click="decreaseCount"
+                        >
+                            <v-icon dark>
+                                mdi-minus
+                            </v-icon>
+                        </v-btn>
                     </div>
-                    <input
-                        v-model="item.count"
-                        class="product-preview__count"
-                        type="number"
-                        min="0"
-                        step="1"
-                    >
-                    <div
-                        class="product-preview__prices-minus-button"
-                        @click="decreaseCount"
-                    >
-                        <i class="fas fa-minus-circle" />
-                    </div>
-                </div>
 
-                <div class="product-preview__sum">
-                    Всего: {{ item.price*item.count }} руб.
+                    <div class="caption">
+                        Всего: {{ item.price*item.count }} руб.
+                    </div>
                 </div>
             </div>
-        </div>
+        </v-card>
         <div class="spacer" />
     </div>
 </template>

@@ -1,13 +1,17 @@
 <template>
     <div class="signup">
-        <div class="container">
+        <v-container
+            fluid
+            px-4
+            py-0
+        >
             <img
                 class="signup__logo"
-                src="../../../images/logo_2.png"
+                src="../../../images/logo_3.png"
                 alt=""
             >
-            <form
-                class="signup__form"
+            <v-form
+                lazy-validation
                 @submit.prevent="onSubmit"
             >
                 <div class="headline">
@@ -17,106 +21,87 @@
                     class="form-group"
                     :class="{invalid: $v.name.$error}"
                 >
-                    <label
-                        class="signup__label"
-                        for="name"
-                    >Ваше имя:</label>
-                    <input
-                        id="name"
+                    <v-text-field
                         v-model="name"
-                        type="text"
+                        label="Имя:"
+                        :error-messages="nameErrors"
                         @blur="$v.name.$touch()"
-                    >
-                    <p v-if="$v.name.$anyError">
-                        Пожалуйста, введите имя!
-                    </p>
+                        @input="$v.name.$touch()"
+                    />
                 </div>
+
                 <div
                     class="form-group"
                     :class="{invalid: $v.login.$error}"
                 >
-                    <label
-                        class="signup__label"
-                        for="login"
-                    >Придумайте логин:</label>
-                    <input
-                        id="login"
+                    <v-text-field
                         v-model="login"
-                        type="text"
+                        label="Придумайте логин:"
+                        :error-messages="loginErrors"
                         @blur="$v.login.$touch()"
-                    >
-                    <p v-if="$v.login.$anyError">
-                        Пожалуйста, введите логин (не менее 6 знаков)!
-                    </p>
+                        @input="$v.login.$touch()"
+                    />
                 </div>
+
                 <div
                     class="form-group"
                     :class="{invalid: $v.email.$error}"
                 >
-                    <label
-                        class="signup__label"
-                        for="email"
-                    >Ваш e-mail:</label>
-                    <input
-                        id="email"
+                    <v-text-field
                         v-model="email"
-                        type="text"
+                        label="Ваш e-mail:"
+                        :error-messages="emailErrors"
                         @blur="$v.email.$touch()"
-                    >
-                    <p v-if="$v.email.$anyError">
-                        Пожалуйста, введите правильный email!
-                    </p>
+                        @input="$v.email.$touch()"
+                    />
                 </div>
+
                 <div
                     class="form-group"
                     :class="{invalid: $v.password.$error}"
                 >
-                    <label
-                        class="signup__label"
-                        for="password"
-                    >Придумайте пароль:</label>
-                    <input
-                        id="password"
+                    <v-text-field
                         v-model="password"
                         type="password"
+                        :error-messages="passwordErrors"
+                        label="Пароль:"
                         @blur="$v.password.$touch()"
-                    >
-                    <p v-if="$v.password.$anyError">
-                        Пароль должен быть не менее 6 знаков!
-                    </p>
+                        @input="$v.password.$touch()"
+                    />
                 </div>
                 <div
                     class="form-group"
                     :class="{invalid: $v.confirmPassword.$error}"
                 >
-                    <label
-                        class="signup__label"
-                        for="confirmPassword"
-                    >Повторите пароль:</label>
-                    <input
-                        id="confirmPassword"
+                    <v-text-field
                         v-model="confirmPassword"
                         type="password"
+                        :error-messages="confirmPasswordErrors"
+                        label="Введите пароль еще раз:"
                         @blur="$v.confirmPassword.$touch()"
-                    >
-                    <p v-if="$v.confirmPassword.$anyError">
-                        Пароль должен совпадать!
-                    </p>
+                        @input="$v.confirmPassword.$touch()"
+                    />
                 </div>
                 <div class="spacer" />
-                <app-button
-                    :disabled="$v.$invalid"
+                <v-btn
+                    color="primary"
+                    dark
+                    width="280"
                 >
                     Зарегистрироваться
-                </app-button>
-                <div class="spacer" />
-                <router-link
+                </v-btn>
+                <v-btn
+                    outlined
+                    color="primary"
+                    dark
                     to="/signin"
+                    width="280"
                 >
-                    <app-button>Войти</app-button>
-                </router-link>
-            </form>
-        </div>
+                    Вход
+                </v-btn>
+                <div class="spacer" />
+            </v-form>
+        </v-container>
     </div>
 </template>
 
@@ -124,12 +109,8 @@
 import {
     required, email, minLength, sameAs,
 } from 'vuelidate/lib/validators';
-import Button from '../Button.vue';
 
 export default {
-    components: {
-        appButton: Button,
-    },
     data() {
         return {
             name: '',
@@ -138,6 +119,54 @@ export default {
             password: '',
             confirmPassword: '',
         };
+    },
+    computed: {
+        nameErrors() {
+            let error = '';
+            if (!this.$v.name.$dirty) return error;
+            if (!this.$v.name.required) {
+                error = 'Введите имя';
+            }
+            return error;
+        },
+        loginErrors() {
+            let error = '';
+            if (!this.$v.login.$dirty) return error;
+            if (!this.$v.login.required) {
+                error = 'Введите логин';
+            }
+            return error;
+        },
+        emailErrors() {
+            let error = '';
+            if (!this.$v.email.$dirty) return error;
+            if (!this.$v.email.email) {
+                error = 'E-mail должен быть валидным';
+            } else if (!this.$v.email.required) {
+                error = 'Введите email';
+            }
+            return error;
+        },
+        passwordErrors() {
+            let error = '';
+            if (!this.$v.password.$dirty) return error;
+            if (!this.$v.password.required) {
+                error = 'Введите пароль';
+            } else if (!this.$v.password.minLength) {
+                error = 'Пароль должен быть не менее 6 знаков';
+            }
+            return error;
+        },
+        confirmPasswordErrors() {
+            let error = '';
+            if (!this.$v.confirmPassword.$dirty) return error;
+            if (!this.$v.confirmPassword.required) {
+                error = 'Введите пароль еще раз';
+            } else if (!this.$v.confirmPassword.sameAs) {
+                error = 'Пароли должны быть одинаковыми';
+            }
+            return error;
+        },
     },
     validations: {
         email: {
@@ -198,7 +227,4 @@ export default {
         color: red;
     }
 
-    .invalid input {
-        border: 1px solid red;
-    }
 </style>

@@ -1,14 +1,19 @@
 <template>
     <div class="signin">
-        <div class="container">
+        <v-container
+            fluid
+            px-4
+            py-0
+        >
             <img
                 class="signin__logo"
-                src="../../../images/logo_2.png"
-                alt=""
+                position="center center"
+                src="../../../images/logo_3.png"
             >
-            <form
-                class="signin__form"
-                @submit.prevent="onSubmit"
+            <v-form
+                ref="form"
+                lazy-validation
+                @submit="onSubmit"
             >
                 <div class="headline">
                     Вход
@@ -17,48 +22,49 @@
                     class="form-group"
                     :class="{invalid: $v.email.$error}"
                 >
-                    <label
-                        class="signin__label"
-                        for="login"
-                    >E-mail:</label>
-                    <input
-                        id="login"
+                    <v-text-field
                         v-model="email"
-                        type="text"
+                        label="E-mail"
+                        :error-messages="emailErrors"
                         @blur="$v.email.$touch()"
-                    >
-                    <p v-if="$v.email.$anyError">
-                        Введите email.
-                    </p>
+                        @input="$v.email.$touch()"
+                    />
                 </div>
+
                 <div
                     class="form-group"
                     :class="{invalid: $v.password.$error}"
                 >
-                    <label
-                        class="signin__label"
-                        for="password"
-                    >Пароль:</label>
-                    <input
-                        id="password"
+                    <v-text-field
                         v-model="password"
                         type="password"
+                        :error-messages="passwordErrors"
+                        label="Пароль"
                         @blur="$v.password.$touch()"
-                    >
-                    <p v-if="$v.password.$anyError">
-                        Введите пароль.
-                    </p>
+                        @input="$v.password.$touch()"
+                    />
                 </div>
                 <div class="spacer" />
-                <app-button>Войти</app-button>
-                <div class="spacer" />
-                <router-link
-                    to="/signup"
+                <v-btn
+                    color="primary"
+                    dark
+                    width="280"
+                    @click="onSubmit"
                 >
-                    <app-button>Регистрация</app-button>
-                </router-link>
-            </form>
-        </div>
+                    Войти
+                </v-btn>
+                <v-btn
+                    color="primary"
+                    outlined
+                    dark
+                    to="/signup"
+                    width="280"
+                >
+                    Регистрация
+                </v-btn>
+                <div class="spacer" />
+            </v-form>
+        </v-container>
     </div>
 </template>
 
@@ -66,17 +72,34 @@
 import {
     required, email,
 } from 'vuelidate/lib/validators';
-import Button from '../Button.vue';
 
 export default {
-    components: {
-        appButton: Button,
-    },
     data() {
         return {
             email: '',
             password: '',
         };
+    },
+    computed: {
+        emailErrors() {
+            let errors = [];
+            if (!this.$v.email.$dirty) return errors;
+            if (!this.$v.email.email) {
+                errors.push('E-mail должен быть валидным');
+            } else if (!this.$v.email.required) {
+                errors = [];
+                errors.push('Введите email');
+            }
+            return errors;
+        },
+        passwordErrors() {
+            const errors = [];
+            if (!this.$v.password.$dirty) return errors;
+            if (!this.$v.password.required) {
+                errors.push('Введите пароль');
+            }
+            return errors;
+        },
     },
     validations: {
         email: {
@@ -105,21 +128,8 @@ export default {
         text-align: center;
     }
 
-    .signin__label {
-        display: block;
-        margin-bottom: 5px;
-        text-align: left;
-    }
-
     .signin__logo {
         width: 145px;
-    }
-
-    .signin__form input {
-        width: 100%;
-        border: 1px solid #d1cece;
-        padding: 10px;
-        border-radius: 25px;
     }
 
 </style>

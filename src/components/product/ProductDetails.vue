@@ -4,7 +4,11 @@
         class="product-detail"
     >
         <app-gallery :product="product" />
-        <div class="container">
+        <v-container
+            fluid
+            px-4
+            py-4
+        >
             <div class="product-detail__info">
                 <div class="product-detail__name">
                     {{ product.name }}
@@ -23,7 +27,9 @@
                     class="product-detail__author-img"
                     :style="{backgroundImage: `url(${SERVER_URL}${product.author.image[0].url})`}"
                 />
-                <div class="product-detail__author-name">
+                <div
+                    class="product-detail__author-name secondary--text"
+                >
                     {{ product.author.name }}
                 </div>
             </router-link>
@@ -47,22 +53,28 @@
                     </tr>
                 </table>
             </div>
-
-            <app-button
+            <v-btn
                 v-if="product.active"
-                @click.native="addItemToCart"
+                color="primary"
+                light
+                width="280"
+                @click="addItemToCart"
             >
                 Добавить в корзину
-            </app-button>
+            </v-btn>
             <div class="spacer" />
-            <app-button
+            <v-btn
                 v-if="authUser && product.active"
-                @click.native="removeProduct"
+                color="primary"
+                light
+                outlined
+                width="280"
+                @click="removeProduct"
             >
                 Закрыть объявление
-            </app-button>
+            </v-btn>
             <app-loading v-if="!loadedData" />
-        </div>
+        </v-container>
     </div>
 </template>
 
@@ -70,13 +82,11 @@
 import { SERVER_URL, EMPTY_IMAGE_URL } from '@/constants';
 import { mapState } from 'vuex';
 import { getProductData, removeProduct } from '@/services';
-import Button from '../Button.vue';
 import Gallery from '../Gallery.vue';
 import Loading from '../LoadingIndicator.vue';
 
 export default {
     components: {
-        appButton: Button,
         appGallery: Gallery,
         appLoading: Loading,
     },
@@ -150,7 +160,7 @@ export default {
     }
 
     .product-detail__price {
-        color: #40db81
+        color: #8BC34A
     }
 
     .product-detail__img {
@@ -175,7 +185,6 @@ export default {
 
     .product-detail__author-name {
         margin-left: 20px;
-        color: #333131;
     }
 
     .product-detail__description {

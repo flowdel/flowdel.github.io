@@ -1,9 +1,10 @@
 <template>
-    <div class="container">
+    <v-container
+        fluid
+    >
         <div
             class="products"
         >
-            <div class="spacer" />
             <app-product-preview
                 v-for="product in products"
                 :key="product.id"
@@ -15,13 +16,13 @@
             />
             <app-loading v-if="!loadedData" />
         </div>
-    </div>
+    </v-container>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-
 import { loadProducts } from '@/services';
+
 import ProductPreview from './ProductPreview.vue';
 import Loading from '../LoadingIndicator.vue';
 
@@ -29,6 +30,7 @@ export default {
     components: {
         appProductPreview: ProductPreview,
         appLoading: Loading,
+
     },
     data() {
         return {

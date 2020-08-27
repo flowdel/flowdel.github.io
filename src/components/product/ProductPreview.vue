@@ -1,29 +1,29 @@
 <template>
-    <div>
-        <router-link
-            :to="{name: 'ProductDetails', params: {id: product.id}}"
-            class="product-preview"
-        >
-            <app-gallery :product="product" />
+    <v-card
+        class="mx-auto mb-3"
+        max-width="400"
+        :to="{name: 'ProductDetails', params: {id: product.id}}"
+    >
+        <app-gallery :product="product" />
 
-            <div class="product-preview__info">
-                <div class="product-preview__name">
-                    {{ product.name }}
-                </div>
-                <div class="product-preview__price">
-                    {{ product.price }} руб.
-                </div>
-            </div>
-        </router-link>
-    </div>
+        <v-card-title class="py-2">
+            {{ product.name }}
+        </v-card-title>
+
+        <v-card-subtitle
+            class="py-3"
+        >
+            {{ product.price }} руб.
+        </v-card-subtitle>
+    </v-card>
 </template>
 
 <script>
-
 import Gallery from '../Gallery.vue';
 
 export default {
     components: {
+        // appProductPreview: ProductPreview,
         appGallery: Gallery,
     },
     props: {
@@ -36,33 +36,4 @@ export default {
 </script>
 
 <style>
-    .product-preview {
-        cursor: pointer;
-        text-decoration: none;
-        color: inherit;
-    }
-
-    .product-preview__info {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        margin-bottom: 15px;
-    }
-
-    .product-preview__price {
-        color: #40db81
-    }
-
-    .product-preview__img {
-        margin-bottom: 15px;
-        width: 0;
-        height: 0;
-        padding: 0 100% 65% 0;
-        background-size: cover;
-    }
-
-    .swiper-button-next, .swiper-button-prev {
-        opacity: 0;
-    }
-
 </style>

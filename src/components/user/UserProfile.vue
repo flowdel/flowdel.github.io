@@ -1,89 +1,82 @@
 <template>
-    <div class="container">
-        <div class="spacer" />
-        <div class="headline">
-            Профиль
-        </div>
-        <form
-            action=""
-            class="user-profile"
-        >
-            <label for="user-profile__name">Имя:</label>
-            <input
-                id="user-profile__name"
+    <v-container
+        fluid
+        px-4
+        py-0
+    >
+        <v-form>
+            <div class="headline">
+                Профиль
+            </div>
+            <v-text-field
                 v-model="user.name"
-                class="user-profile__input"
-                type="text"
+                label="Имя:"
                 :disabled="!isEditing"
-            >
-
-            <label for="user-profile__address">Адрес:</label>
-            <input
-                id="user-profile__address"
+            />
+            <v-text-field
                 v-model="user.address"
-                class="user-profile__input"
-                type="text"
+                label="Адрес:"
                 :disabled="!isEditing"
-            >
-            <label for="user-profile__email">Почта:</label>
-            <input
-                id="user-profile__email"
+            />
+            <v-text-field
                 v-model="user.email"
-                class="user-profile__input"
-                type="email"
+                label="E-mail:"
                 :disabled="!isEditing"
-            >
-            <label for="user-profile__number">Телефон:</label>
-            <input
-                id="user-profile__number"
+            />
+            <v-text-field
                 v-model="user.number"
-                class="user-profile__input"
-                type="text"
+                label="Телефон:"
                 :disabled="!isEditing"
-            >
-            <label for="file">Загрузите фото блюда:</label>
-            <input
-                id="file"
-                class="new-product__input"
-                type="file"
+            />
+            <v-file-input
+                ref="upload"
+                v-model="file"
+                accept="image/*"
+                label="Фото профиля:"
+                prepend-icon="mdi-camera"
                 :disabled="!isEditing"
-                @change="handleFileUpload"
-            >
-            <label for="user-profile__info">О себе:</label>
-            <input
-                id="user-profile__info"
+            />
+            <v-text-field
                 v-model="user.info"
-                class="user-profile__input"
-                type="text"
+                label="О себе:"
                 :disabled="!isEditing"
+            />
+
+            <div class="spacer" />
+
+            <v-btn
+                v-if="!isEditing"
+                color="primary"
+                dark
+                width="280"
+                @click="editUserData"
             >
-        </form>
-        <app-button
-            v-if="!isEditing"
-            @click.native="editUserData"
-        >
-            Редактировать
-        </app-button>
-        <app-button
-            v-else
-            @click.native="updateUserData"
-        >
-            Сохранить
-        </app-button>
+                Редактировать
+            </v-btn>
+            <v-btn
+                v-else
+                color="primary"
+                outlined
+                dark
+                width="280"
+                @click="updateUserData"
+            >
+                Сохранить
+            </v-btn>
+            <div class="spacer" />
+        </v-form>
         <app-loading v-if="!loadedData" />
-    </div>
+    </v-container>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import { getUserData, saveNewProfilePicture, saveUserData } from '@/services';
-import Button from '../Button.vue';
 import Loading from '../LoadingIndicator.vue';
 
 export default {
 
     components: {
-        appButton: Button,
         appLoading: Loading,
     },
     data() {
@@ -151,10 +144,6 @@ export default {
         saveUserData(user) {
             // eslint-disable-next-line max-len
             saveUserData(this.idToken, this.userId, user);
-        },
-
-        handleFileUpload(event) {
-            [this.file] = event.target.files;
         },
 
     },

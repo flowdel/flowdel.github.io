@@ -1,37 +1,23 @@
 <template>
-    <swiper
-        class="swiper"
+    <v-carousel
+        height="200"
+        :show-arrows="false"
+        hide-delimiter-background
     >
-        <swiper-slide
-            v-for="image in product.image"
-            :key="image.url"
-        >
-            <div
-                class="product-preview__img"
-                :style="{
-                    backgroundImage: `url(${SERVER_URL}${image.url})`,
-                }"
-            />
-        </swiper-slide>
-        <div
-            slot="button-next"
-            class="swiper-button-next"
+        <v-carousel-item
+            v-for="(image, index) in product.image"
+            :key="index"
+            :src="SERVER_URL+image.url"
+            reverse-transition="fade-transition"
+            transition="fade-transition"
         />
-    </swiper>
+    </v-carousel>
 </template>
 
 <script>
-import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper';
 import { SERVER_URL } from '@/constants';
 
 export default {
-    components: {
-        Swiper,
-        SwiperSlide,
-    },
-    directives: {
-        swiper: directive,
-    },
     props: {
         product: {
             type: Object,

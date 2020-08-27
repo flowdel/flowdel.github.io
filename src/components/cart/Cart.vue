@@ -1,6 +1,9 @@
 <template>
-    <div class="container">
-        <div class="spacer" />
+    <v-container
+        fluid
+        px-4
+        py-0
+    >
         <div class="headline">
             Корзина
         </div>
@@ -12,22 +15,28 @@
                 v-for="item in cart"
                 :key="item.id"
                 :item="item"
-            >
-                {{ cart }}
-            </app-cart-item>
+            />
             <div class="spacer" />
-            <app-button
-                @click.native="confirmCart"
+            <v-btn
+                color="primary"
+                dark
+                width="280"
+                @click="confirmCart"
             >
                 Подтвердить
-            </app-button>
+            </v-btn>
             <div class="spacer" />
-            <app-button
-                @click.native="clearCart"
+            <v-btn
+                color="primary"
+                outlined
+                dark
+                width="280"
+                @click="clearCart"
             >
                 Очистить корзину
-            </app-button>
+            </v-btn>
         </div>
+
         <div
             v-else
             class="cart cart_empty"
@@ -35,19 +44,17 @@
             <i class="far fa-sad-tear" />
             Здесь пока ничего нет...
         </div>
-    </div>
+    </v-container>
 </template>
 
 <script>
 import { removeCart } from '@/storage';
 import { mapGetters } from 'vuex';
 import CartItem from './CartItem.vue';
-import Button from '../Button.vue';
 
 export default {
     components: {
         appCartItem: CartItem,
-        appButton: Button,
     },
     computed: {
         ...mapGetters([
@@ -65,7 +72,6 @@ export default {
 
         clearCart() {
             removeCart();
-            this.$router.go();
         },
     },
 };
