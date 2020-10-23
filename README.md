@@ -1,24 +1,19 @@
-# feed-neighbor
+# Feed neighbor
 
-## Project setup
+Feed neighbor is a simple app that serves as a platform to share food between neighbors.
+
+
+## Getting started
 ```
 npm install
 ```
-
-### Compiles and hot-reloads for development
 ```
 npm run serve
 ```
+Next you can sign up and share food with your neighbors as well as buy food for yourself. 
 
-### Compiles and minifies for production
-```
-npm run build
-```
+Enjoy!
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Author
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+* **Adel Gazizova** - *Frontend developer* - [flowdel](https://github.com/flowdel)
