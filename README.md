@@ -13,11 +13,15 @@ Feed neighbor is a simple app that serves as a platform to share food between ne
 
 First install all dependencies:
 
-```npm install```
+```
+npm install
+```
 
 Next run the app:
 
-```npm run serve```
+```
+npm run serve
+```
 
 ## Author
 
